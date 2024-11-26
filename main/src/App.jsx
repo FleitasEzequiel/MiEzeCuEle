@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import './App.css'
+import './index.css'
 import Query from './assets/components/Query'
+import Output from "./assets/components/Output"
+import Table from './assets/components/Table'
 function App() {
   const [count, setCount] = useState(0)
 
@@ -8,6 +10,8 @@ function App() {
     <>
       <div>
         <Query />
+        <Output />
+        <Table />
         </div>
     </>
   )

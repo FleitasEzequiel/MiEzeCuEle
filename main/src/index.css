@@ -11,7 +11,7 @@
 
 .query-button{
   background-color: blue;
-  border-radius: 16px;
+  border-radius: 8px;
   border: 0px;
   width: 6rem;
   height:2rem;
@@ -28,4 +28,13 @@
   form{
   display:flex;
   align-items: center;
+}
+.Output{
+  display:flex;
+  width: 100%;
+}
+.Output>textarea{
+  width: 60%;
+  margin-inline: auto;
+  margin-top: 1rem;
 }
