@@ -2,16 +2,30 @@
 :root {
   background-color: #FEFAE0
 }
-
+body{
+  padding:0px;
+  margin: 0px;
+}
 
 .query-form{
+  background-color: #CCD5AE;
+  padding:0px;
   display: flex;
   justify-content: center;
   gap: 2px;
+  padding-block:8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.query-form>form>textarea{
+  background-color: #E0E5B6;
+  border-color: #CCD5AE;
+  outline:0px;
+  resize: none;
 }
 
 .query-button{
-  background-color: #FAEDCE;
+  background-color: #E0E5B6;
   border-color: #CCD5AE;
   border-radius: 8px;
   border-style: solid;
@@ -34,4 +48,17 @@
   width: 60%;
   margin-inline: auto;
   margin-top: 1rem;
+}
+
+.Table{
+  display: flex;
+  justify-items: center;
+  justify-content: center;
+}
+table{
+  margin:10px;  
+  background-color: black;
+}
+tr{
+  background-color: #E0E5B6;
 }
