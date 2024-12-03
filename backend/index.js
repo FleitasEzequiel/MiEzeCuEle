@@ -1,7 +1,9 @@
 import express from "express"
 import db from "./db.js"
+import ejs from "ejs"
 const App = express()
 App.use(express.urlencoded({ extended: true }))
+App.set("view engine","ejs")
 App.listen(3000,()=>{
     console.log('ta andando')
 })
@@ -22,5 +24,7 @@ App.post("/",async (req,res)=>{
 
     }
     console.log(req.body)
-    res.send("hola")
+    res.render("home.ejs",{
+        o:"hola"
+    })
 })
