@@ -19,12 +19,12 @@ App.get("/",async (req,res)=>{
 
 App.post("/",async (req,res)=>{
     try{
-        db()
+        const info = db()
     }catch{
 
     }
     console.log(req.body)
     res.render("home.ejs",{
-        o:"hola"
+        data:info
     })
 })
