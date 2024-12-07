@@ -6,7 +6,7 @@ const CreateConnection = async(data) =>{
     const Connection = await mysql2.createConnection({
         host:"localhost",
         user:"root",
-        password:""
+        password:data.password
     })
     return Connection
 }

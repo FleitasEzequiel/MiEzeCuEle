@@ -18,13 +18,16 @@ App.get("/",async (req,res)=>{
 })
 
 App.post("/",async (req,res)=>{
+    let info = {}
     try{
-        const info = db()
-    }catch{
-
+            const resp = await db(req.body)
+            info = resp
+    }catch(error){
+        console.log("error",error)
+        info = error
     }
-    console.log(req.body)
     res.render("home.ejs",{
-        data:info
+        title:"home",
+        info:info
     })
 })
