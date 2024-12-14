@@ -22,9 +22,10 @@ App.post("/",async (req,res)=>{
     try{
             const resp = await db(req.body)
             info = resp
+            info.dbs = await resp.query("SHOW DATABASES")
     }catch(error){
         console.log("error",error)
-        info = error
+        info.error = error
     }
     res.render("home.ejs",{
         title:"home",

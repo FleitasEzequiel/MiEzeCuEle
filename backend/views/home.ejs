@@ -6,15 +6,19 @@
     <title>MiEzeCuEle</title>
 </head>
 <body>
-    Bienvenido a MiEzeCuEle, <h1><%=info.user%</h1>
-    Seleccionar Base De Datos
+    <%if (info.error){%>
+        <%=info.error%>
+        <%} else{%>
+            <h1>Bienvenido, <%=info.connection.config.user%></h1>
+            Seleccionar Base de Datos
     <form action="">
         <select name="Hola" id="">
-            <option value="Base 1"></option>
+            <% for (var i = 0; i < info.dbs[0].length; i++) { %>
+                <option value=""><%=info.dbs[0][i].Database%></option>
+              <% } %>
         </select>
     </form>
-    <% if (true){%>
-    <%=info%>
     <%}%>
+    <%if (true) { console.log(info.dbs)}%>
 </body>
 </html>
