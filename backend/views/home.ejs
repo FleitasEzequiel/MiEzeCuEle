@@ -11,14 +11,28 @@
         <%} else{%>
             <h1>Bienvenido, <%=info.connection.config.user%></h1>
             Seleccionar Base de Datos
-    <form action="">
-        <select name="Hola" id="">
+    <form method="post">
+        <select name="database" id="" >
             <% for (var i = 0; i < info.dbs[0].length; i++) { %>
-                <option value=""><%=info.dbs[0][i].Database%></option>
+                <option value=<%=info.dbs[0][i].Database%>><%=info.dbs[0][i].Database%></option>
               <% } %>
-        </select>
+            </select>
+            <input type="text" name="query" id="" value="SHOW TABLES">
+            <button>Ver</button>
     </form>
     <%}%>
-    <%if (true) { console.log(info.dbs)}%>
+    
+    <%if (info.result){%>
+        <%=info.result[0]%>
+        <%}%>
+    <%if (true) { console.log("coshendo")}%>
+    <form  method="get">    
+        <button type="submit" value="logout" name="session" onclick="window.location.href='localhost:300'" >Cerrar Sesión</button>
+    </form>
 </body>
+<style>
+    body{
+        background-color: rgb(177, 166, 166)
+    }
+</style>
 </html>

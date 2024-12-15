@@ -18,13 +18,45 @@ App.get("/",async (req,res)=>{
 })
 
 App.post("/",async (req,res)=>{
+    const cookie = req.headers.cookie ? JSON.parse(decodeURIComponent(req.headers.cookie.split("=")[1]).substring(2)) : false;
     let info = {}
+    if (req.body.session == "logout"){
+        res.clearCookie("user")
+    }
     try{
-            const resp = await db(req.body)
-            info = resp
-            info.dbs = await resp.query("SHOW DATABASES")
+        const resp = await db(cookie ? cookie : req.body)
+        info = resp
+
+        //Crear Cookie Si No Existe
+        if (!cookie){
+            console.log("no hay cookie")
+            const session = {
+                user: req.body.user,
+                password: req.body.password,
+                database: req.body.database
+            }
+            res.cookie("user",session)
+        }
+        //----------------------
+        if (req.body.query){
+            await resp.query(`USE ${req.body.database}`)
+            const result = await resp.query(req.body.query)
+            console.log(result[0])
+            info.result = result
+        }
+        info.dbs = await resp.query("SHOW DATABASES")
     }catch(error){
         console.log("error",error)
+        if (error.errorno == 1045){
+            res.clearCookie("user")
+        }
+        switch (true) {
+            case (error.errorno == 1045):
+                info.error = "nao nao"
+                break;
+            default:
+                break;
+        }
         info.error = error
     }
     res.render("home.ejs",{
