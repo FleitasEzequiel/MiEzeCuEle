@@ -18,6 +18,7 @@ App.get("/",async (req,res)=>{
 })
 
 App.post("/",async (req,res)=>{
+    //Renderizado completo de la página
     const cookie = req.headers.cookie ? JSON.parse(decodeURIComponent(req.headers.cookie.split("=")[1]).substring(2)) : false;
     let info = {}
     if (req.body.session == "logout"){
@@ -25,6 +26,7 @@ App.post("/",async (req,res)=>{
     }
     try{
         const resp = await db(cookie ? cookie : req.body)
+        //Crear la información necesaria para el renderizado
         info = resp
 
         //Crear Cookie Si No Existe
@@ -38,12 +40,14 @@ App.post("/",async (req,res)=>{
             res.cookie("user",session)
         }
         //----------------------
+        //Si existe una consulta realizarla
         if (req.body.query){
             await resp.query(`USE ${req.body.database}`)
             const result = await resp.query(req.body.query)
             console.log(result[0])
             info.result = result
         }
+        //Mostrar todas las bases de datos existentes
         info.dbs = await resp.query("SHOW DATABASES")
     }catch(error){
         console.log("error",error)
