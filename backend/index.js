@@ -42,13 +42,16 @@ App.post("/",async (req,res)=>{
         //----------------------
         //Si existe una consulta realizarla
         if (req.body.query){
-            await resp.query(`USE ${req.body.database}`)
+            await resp.query("USE `bd-proyecto-rutabus`")
             const result = await resp.query(req.body.query)
             console.log(result[0])
             info.result = result
         }
         //Mostrar todas las bases de datos existentes
         info.dbs = await resp.query("SHOW DATABASES")
+        info.dbs[0].forEach(async(element,index) => {
+            const tables = await resp.query("SHOW TABLES FROM `?`", element.Database )
+        });
     }catch(error){
         console.log("error",error)
         if (error.errorno == 1045){
