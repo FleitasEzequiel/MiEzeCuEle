@@ -5,36 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MiEzeCuEle</title>
 </head>
-<body>
-    <%if (info.error){%>
-        <%=info.error%>
-        <%} else{%>
-            <h1>Bienvenido, <%=info.connection.config.user%></h1>
-            Seleccionar Base de Datos
-    <form method="post">
-        <select name="database" id="" >
-            <% for (var i = 0; i < info.dbs[0].length; i++) { %>
-                <option value=<%=info.dbs[0][i].Database%>><%=info.dbs[0][i].Database%></option>
+<body style="padding: 0; margin: 0; display: flex; flex-direction: row;">
+    <div style="display: flex;background-color: rgb(108, 102, 102); width: 20%;min-height: 100vh; flex-direction: column;">
+        <h1>MiEzeCuEle</h1>
+        <div style="display: flexbox;">
+            <%console.log(info.dbs[1])%>
+            <% for (var i = 0; i < info.dbs.length; i++) { %>
+                <div onclick="event.target.classList.remove('closed')" class="closed">
+                    <h3><%=info.dbs[i].database%></h3>
+                    <ul >
+                        <% for (var j = 0; j < info.dbs[i].tables.length; j++) { %>
+                            <li><%=info.dbs[i].tables[j]%></li>                        
+                            <% } %>
+                        </ul>
+                    </div>
               <% } %>
-            </select>
-            <input type="text" name="query" id="" value="SHOW TABLES">
-            <button>Ver</button>
-    </form>
-    <%}%>
-    
-    <%if (info.result){%>
-        <%=info.result[0]%>
-        <%}%>
-    <%if (true) { console.log("coshendo")}%>
-    <form  method="get">    
-        <button type="submit" value="logout" name="session" onclick="window.location.href='localhost:300'" >Cerrar Sesión</button>
-    </form>
+        </div>
+    </div>
+    <main style="display:inline-flex; width: 100%;">
+        <div style="display:grid; grid-template-columns: 20% 60% 20%;width: 100%;">
+            <div style="height: 10vh;background-color: rgb(185, 116, 116)">Hola</div>
+            <div>Hola2</div>
+            <div>Hola3</div>
+        </div>
+    </main>
 </body>
+
 <style>
     body{
         background-color: rgb(177, 166, 166)
-
-        
     }
 </style>
+<script>
+    const closed = document.querySelectorAll(".closed>ul>li")
+    for (const key in closed) {
+        if (Object.prototype.hasOwnProperty.call(closed, key)) {
+            const element = closed[key];
+            element.setAttribute("hidden",true)
+        }
+    }
+</script>
 </html>

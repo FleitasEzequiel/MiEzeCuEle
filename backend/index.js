@@ -27,7 +27,19 @@ App.post("/",async (req,res)=>{
     try{
         const resp = await db(cookie ? cookie : req.body)
         //Crear la información necesaria para el renderizado
-        info = resp
+        const query = await resp.query(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`  )
+        const map = []
+        await query[0].map((el)=>{
+            const indice = map.findIndex((e) => e.database == el.TABLE_SCHEMA);
+            if (indice == -1){
+                map.push({
+                    "database":el.TABLE_SCHEMA,
+                    "tables":[`${el.TABLE_NAME}`]
+                })   
+            }else{
+                map[indice].tables.push(el.TABLE_NAME)
+            }})
+        info.dbs = map
 
         //Crear Cookie Si No Existe
         if (!cookie){
@@ -48,10 +60,8 @@ App.post("/",async (req,res)=>{
             info.result = result
         }
         //Mostrar todas las bases de datos existentes
-        info.dbs = await resp.query("SHOW DATABASES")
-        info.dbs[0].forEach(async(element,index) => {
-            const tables = await resp.query(`USE \`${element.Database}\` ` )
-        });
+
+        
     }catch(error){
         console.log("error",error)
         if (error.errorno == 1045){
