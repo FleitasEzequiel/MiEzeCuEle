@@ -54,7 +54,6 @@ App.post("/",async (req,res)=>{
         //----------------------
         //Si existe una consulta realizarla
         if (req.body.query){
-            await resp.query(`USE \`${req.body.database}\` `)
             const result = await resp.query(req.body.query)
             console.log(result[0])
             info.result = result

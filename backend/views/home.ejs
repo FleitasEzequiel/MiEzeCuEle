@@ -22,15 +22,17 @@
         </div>
     </div>
     <main style="display:inline-flex; width: 100%; flex-direction: column;">
-        <div style="display:grid; grid-template-columns: 20% 60% 20%;width: 100%;">
+        <div style="display:grid; grid-template-rows: 20% 60% 20%;width: 100%; height:100%;">
             <div style="height: 10vh;background-color: rgb(185, 116, 116)">Hola</div>
             <div>
-                <form method="post">
+                <form   method="post">
                     <input type="text" name="query" placeholder="Escribir consulta acá...">
                     <button>Query</button>
                 </form>
             </div>
-            <div>Hola3</div>
+            <div>
+                <%=info.result%>
+            </div>
         </div>
     </main>
 </body>
