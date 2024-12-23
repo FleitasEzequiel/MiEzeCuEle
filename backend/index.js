@@ -55,7 +55,6 @@ App.post("/",async (req,res)=>{
         //Si existe una consulta realizarla
         if (req.body.query){
             const result = await resp.query(req.body.query)
-            console.log(result[0])
             info.result = result
         }
         //Mostrar todas las bases de datos existentes
