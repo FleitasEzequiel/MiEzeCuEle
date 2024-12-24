@@ -30,19 +30,22 @@
                 </form>
             </div>
             <div>
-                <table>
-                    <tr style="background-color: antiquewhite;">
-                        <% for (var i = 0; i < info.result[1].length; i++) { %>
-                            <th><%=info.result[1][i].name%></th>
-                          <% } %>
-                    </tr>
-                    <% for (var i = 0; i < info.result[0].length; i++) { %>
-                        <tr>
-                            <td><%=Object.values(info.result[0][i])[0]  %></td>
+                <% console.log(info.result)%>
+                <% if (info.result.length > 0) {%>
+                    <table>
+                        <tr style="background-color: antiquewhite;">
+                            <% for (var i = 0; i < info.result[1].length; i++) { %>
+                                <th><%=info.result[1][i].name%></th>
+                              <% } %>
                         </tr>
-                      <% } %>
-                </table>
-                <!-- <%console.log(info.result[0][0])%> -->
+                        <% for (var i = 0; i < info.result[0].length; i++) { %>
+                            <tr>
+                                <td><%=Object.values(info.result[0][i])[0]  %></td>
+                            </tr>
+                          <% } %>
+                    </table>
+                    <%}%>
+
             </div>
         </div>
     </main>
