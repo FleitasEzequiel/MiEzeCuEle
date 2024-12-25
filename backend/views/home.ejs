@@ -22,8 +22,8 @@
         </div>
     </div>
     <main style="display:inline-flex; width: 100%; flex-direction: column;">
-        <div style="display:grid; grid-template-rows: 20% 60% 20%;width: 100%; height:100%;">
-            <div>
+        <div style="display:grid; grid-template-rows: 15% 65% 20%;width: 100%; height:100%;">
+            <div style="display:flex; justify-content: center;align-items: center;">
                 <form   method="post">
                     <input type="text" name="query" placeholder="Escribir consulta acá...">
                     <button>Query</button>
@@ -31,20 +31,23 @@
             </div>
             <div>
                 <% console.log(info.result)%>
-                <% if (info.result.length > 0) {%>
+                <% if (info.result) {%>
                     <table>
                         <tr style="background-color: antiquewhite;">
                             <% for (var i = 0; i < info.result[1].length; i++) { %>
                                 <th><%=info.result[1][i].name%></th>
                               <% } %>
                         </tr>
-                        <% for (var i = 0; i < info.result[0].length; i++) { %>
+                        <% for (var i = 0; i < Object.values(info.result[0]).length; i++) { %>
                             <tr>
-                                <td><%=Object.values(info.result[0][i])[0]  %></td>
-                            </tr>
+                           <% for (var j = 0; j < Object.values(info.result[0][i]).length; j++) { %>
+                            <td><%=Object.values(info.result[0][i])[j]%></td>
+                           <% } %>
+                        </tr>
                           <% } %>
                     </table>
                     <%}%>
+                    <%=info.error%>
 
             </div>
         </div>
