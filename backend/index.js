@@ -67,7 +67,8 @@ App.post("/",async (req,res)=>{
         }
         switch (true) {
             case (error.errorno == 1045):
-                info.error = "nao nao"
+                info.error = "nao nao"                
+                res.sendFile("login.html",{root:"./"})
                 break;
             default:
                 break;
