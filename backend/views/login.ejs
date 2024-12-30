@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <%if (info.error){%>
+        <h1>
+            <%=info.error%>
+        </h1>
+        <%}%>
+    </div>
+    <div>
+        <form method="post" >
+            <span>Contraseña</span>    
+                <input type="text" name="password" >     
+                <span>Nombre</span>    
+                <input type="text" name="user" >         
+                <button>Enviar</button>   
+        </form>
+    </div>
+</body>
+<style>
+    body{
+        margin: 0;
+        padding:0;
+        background-color: rgb(177, 166, 166)
+    }
+    div{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+</html>
