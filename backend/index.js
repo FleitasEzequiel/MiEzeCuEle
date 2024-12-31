@@ -65,16 +65,13 @@ App.post("/",async (req,res)=>{
         if (error.errorno == 1045){
             res.clearCookie("user")
         }
-        switch (true) {
-            case (error.errorno == 1045):
-                info.error = "nao nao"                
-                res.sendFile("login.html",{root:"./"})
-                break;
-            default:
-                break;
-        }
-        info.error = error
+        res.render("login.ejs",{
+            title:"login",
+            info:info
+        })
     }
+
+
     res.render("home.ejs",{
         title:"home",
         info:info
