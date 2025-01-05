@@ -19,7 +19,7 @@ App.get("/",async (req,res)=>{
 
 App.post("/",async (req,res)=>{
     //Renderizado completo de la página
-    const cookie = req.headers.cookie ? JSON.parse(decodeURIComponent(req.headers.cookie.split("=")[1]).substring(2)) : false;
+    const cookie = req.headers.cookie ? JSON.parse(decodeURIComponent(req.headers.cookie.split("=")[1]).slice(2,-7)) : false;
     let info = {}
     if (req.body.session == "logout"){
         res.clearCookie("user")
