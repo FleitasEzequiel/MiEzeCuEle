@@ -15,8 +15,12 @@
         <div style="display: flexbox;">
             <% for (var i = 0; i < info.dbs.length; i++) { %>
                 <div onchange="alert('hola')" class="closed">
-                    <h3><%=info.dbs[i].database%></h3>
-                    <ul >
+                    <ul onclick="
+                        if (event.currentTarget.getAttribute('open') == true){
+                            event.currentTarget.removeAttribute('open')} else{
+                        event.currentTarget.setAttribute('open',true)
+                        }">
+                        <%=info.dbs[i].database%>
                         <% for (var j = 0; j < info.dbs[i].tables.length; j++) { %>
                             <li><%=info.dbs[i].tables[j]%></li>                        
                             <% } %>
@@ -67,6 +71,14 @@
     input{
         color: rgb(110, 102, 102);
         border-radius: 16px;
+    }
+    ul[open=true]>li{
+        height: 0;
+        visibility: hidden;
+    }
+    ul[open=false]>li{
+        height: 100%;
+        visibility: visible;
     }
 </style>
 <script>
