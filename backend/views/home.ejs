@@ -14,28 +14,26 @@
         </form>
         <div style="display: flexbox;">
             <% for (var i = 0; i < info.dbs.length; i++) { %>
-                <div onchange="alert('hola')" class="closed">
                     <ul onclick="
-                        if (event.currentTarget.getAttribute('open') == true){
-                            event.currentTarget.removeAttribute('open')} else{
-                        event.currentTarget.setAttribute('open',true)
-                        }">
+                        (event.currentTarget.getAttribute('open') === 'true') ? 
+                        event.currentTarget.setAttribute('open',false) :
+                        event.currentTarget.setAttribute('open',true)"
+                        open="false"
+                        style="cursor:pointer">
                         <%=info.dbs[i].database%>
                         <% for (var j = 0; j < info.dbs[i].tables.length; j++) { %>
                             <li><%=info.dbs[i].tables[j]%></li>                        
                             <% } %>
                         </ul>
-                    </div>
               <% } %>
         </div>
     </div>
     <main style="display:inline-flex; width: 100%; flex-direction: column;">
         <div style="display:grid; grid-template-rows: 15% 65% 20%;width: 100%; height:100%;">
             <div style="display:flex; justify-content: center;align-items: center;">
-                <form action=""     method="post"></form>
-                <form  method="get" >
+                <form  method="post" >
                     <input type="text" name="query" placeholder="Escribir consulta acá...">
-                    <button type="submit">Query</button>
+                    <button >Query</button>
                 </form>
             </div>
             <div>
@@ -72,32 +70,31 @@
         color: rgb(110, 102, 102);
         border-radius: 16px;
     }
-    ul[open=true]>li{
+    ul[open=false]>li{
         height: 0;
         visibility: hidden;
     }
-    ul[open=false]>li{
+    ul[open=true]>li{
         height: 100%;
         visibility: visible;
+        animation-name: dropdown;
+        animation-duration: 200ms;
     }
+    @keyframes dropdown {
+  from {
+    transform: translate(0,-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0,0);
+    opacity: 100%;
+  }
+}
 </style>
 <script>
     // Obtain Info
     console.log("intento",infos)
 
-    const renderClose = () =>{
-        const closed = document.querySelectorAll(".closed>ul>li")
-        
-        const closednt = document.querySelectorAll("ul>li")
-        const dbs = document.querySelectorAll(".closed")
-
-        for (const key in closed) {
-            if (Object.prototype.hasOwnProperty.call(closed, key)) {
-                const element = closed[key];
-                element.setAttribute("hidden",true)
-            }
-        }
-    }
     const logout = () =>{
         window.location.reload()
     }
