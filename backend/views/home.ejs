@@ -10,7 +10,7 @@
         <h1>MiEzeCuEle</h1>
         <div style="display: flexbox;flex-direction: column;" class="DatabaseList">
             <%for (var i = 0; i < info.dbs.length; i++) {%>
-                <div class="DatabaseDropdown" id='D<%=i%>'    >
+                <div class="DatabaseDropdown" id='D<%=i%>' onclick="renderTables(event.target,'<%-info.dbs[i].tables%>'.split(','))"     >
                     <%=info.dbs[i].database%>
                 </div>
                 <%}%>
@@ -109,17 +109,23 @@
 }
 </style>
 <script>
+    const renderTables = (parent,tables) =>{
+        const $tables = document.createElement("div")
+        
+        $tables.innerText = "hola"
+        parent.getAttribute('open') == 'true' ? 
+        parent.childNodes.forEach(el=> parent.removeChild(el)):
+        parent.appendChild($tables) 
+    }
     
     const dD = document.querySelectorAll('.DatabaseDropdown')
-    for(let i = 0; i < 3 ; i++){
-        dD[i].addEventListener('click',(e)=>{
-        if (e.target.getAttribute('open') == 'true'){
-                        console.log(` ${'<%-info.dbs[i]%>'}`)
-                    }else{
+    dD.forEach((element,key) => {
+        element.addEventListener(('click'),(e)=>
+    {
+            if (e.target.getAttribute('open') == 'true'){
+            }else{
                         e.target.setAttribute('open','true')
                     }
-    })
-    }
-    console.log('hola mundo',` ${'<%-info.dbs[1]%>'}`)
+    })})
 </script>
 </html>
