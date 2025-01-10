@@ -6,11 +6,11 @@
     <title>MiEzeCuEle</title>
 </head>
 <body style="padding: 0; margin: 0; display: flex; flex-direction: row;">
-    <div style="display: flex;background-color: rgb(108, 102, 102); width: 20%;min-height: 100vh; flex-direction: column;">
+    <div style="display: flex;background-color: #F1F0E8; width: 20%;min-height: 100vh; flex-direction: column;">
         <h1>MiEzeCuEle</h1>
         <div style="display: flexbox;flex-direction: column;" class="DatabaseList">
             <%for (var i = 0; i < info.dbs.length; i++) {%>
-                <div class="DatabaseDropdown" id='D<%=i%>' onclick="renderTables(event.target,'<%-info.dbs[i].tables%>'.split(','))"     >
+                <div class="DatabaseDropdown" id='D<%=i%>' onclick="renderTables(event.target,'<%-info.dbs[i].tables%>;'.split(',')) "     >
                     <%=info.dbs[i].database%>
                 </div>
                 <%}%>
@@ -77,27 +77,26 @@
         border-radius: 16px;
     }
     .DatabaseDropdown{
-        display: flexbox;
+        display: flex;
         cursor: pointer;
-        text-align: center;
-
-    }
-    ul{
-        list-style: none;
-        background-color: bisque;
-        height:4vh;
         border-radius: 4px;
-        text-align: center;
+        min-height: 6vh;
+        line-height: 6vh;
+        align-items: center;
+        justify-content: space-around;
+        margin-bottom: 1vh;
+        flex-direction: column;
     }
-    ul[open=false]>li{
-        display: none;
+    .DatabaseDropdown:hover{
+        background-color: #E5E1DA;
     }
-    ul[open=true]>li{
+    .DatabaseDropdown[open="true"]{
+        box-shadow: 0px 0px 10px 
         
-        background-color: azure;
-        display: contents;
-        /* animation: dropdown 200ms linear 0s 1 ; */
-
+    }
+    .DatabaseDropdown>div{
+        width: 80%;
+        text-align: center;
     }
     @keyframes scalar {
   from {
@@ -111,10 +110,14 @@
 <script>
     const renderTables = (parent,tables) =>{
         const $tables = document.createElement("div")
-        
-        $tables.innerText = "hola"
+        tables.forEach((table)=>{
+            const $table = document.createElement("div")
+            $table.innerText = table
+            $table.className = "databaseTable"
+            $tables.appendChild($table)
+        })
         parent.getAttribute('open') == 'true' ? 
-        parent.childNodes.forEach(el=> parent.removeChild(el)):
+        parent.childNodes.forEach(el=> parent.removeChild(parent.lastElementChild)):
         parent.appendChild($tables) 
     }
     
@@ -123,6 +126,7 @@
         element.addEventListener(('click'),(e)=>
     {
             if (e.target.getAttribute('open') == 'true'){
+                e.target.setAttribute('open','false')
             }else{
                         e.target.setAttribute('open','true')
                     }
