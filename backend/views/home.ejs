@@ -6,8 +6,13 @@
     <title>MiEzeCuEle</title>
 </head>
 <body style="padding: 0; margin: 0; display: flex; flex-direction: row;">
-    <div style="display: flex;background-color: #F1F0E8; width: 20%;min-height: 100vh; flex-direction: column;">
-        <h1>MiEzeCuEle</h1>
+    <div class="sidebar" style="display: flex;background-color: #F1F0E8; width: 20%;min-height: 100vh; flex-direction: column;">
+        <select name="Database" id="">
+            <% for (var i = 0; i < info.dbs.length; i++) { %>
+                <option style="display:flex;"><%=info.dbs[i].database%></option>                        
+                <% } %>
+</div>
+        </select>
         <div style="display: flexbox;flex-direction: column;" class="DatabaseList">
             <%for (var i = 0; i < info.dbs.length; i++) {%>
                 <div class="DatabaseDropdown" id='D<%=i%>' onclick="renderTables(event.target,'<%-info.dbs[i].tables%>;'.split(',')) "     >
@@ -76,6 +81,11 @@
         color: rgb(110, 102, 102);
         border-radius: 16px;
     }
+    .sidebar{
+        border: 0px ;
+        border-color:gray;
+        border-style: solid;
+    }
     .DatabaseDropdown{
         display: flex;
         cursor: pointer;
@@ -91,7 +101,7 @@
         background-color: #E5E1DA;
     }
     .DatabaseDropdown[open="true"]{
-        box-shadow: 0px 0px 10px 
+        box-shadow: 0px 3px 0px  
         
     }
     .DatabaseDropdown>div{
