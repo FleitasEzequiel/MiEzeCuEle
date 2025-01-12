@@ -54,7 +54,7 @@ App.post("/",async (req,res)=>{
         //----------------------
         //Si existe una consulta realizarla
         if (req.body.query){
-            await resp.query('USE ?', req.params.database)
+            await resp.query(`USE \`${req.body.database || "sys"}\` `)
             const result = await resp.query(req.body.query)
             info.result = result
         }
@@ -117,7 +117,7 @@ App.post("/:db",async (req,res)=>{
         //----------------------
         //Si existe una consulta realizarla
         if (req.body.query){
-            await resp.query('USE ?', req.params.database)
+            await resp.query('USE ?', 'sys')
             const result = await resp.query(req.body.query)
             info.result = result
         }
@@ -129,6 +129,7 @@ App.post("/:db",async (req,res)=>{
         if (error.errorno == 1045){
             res.clearCookie("user")
         }
+        res.sendFile("icons",{root:"./"})
         res.render("login.ejs",{
             title:"login",
             info:info
