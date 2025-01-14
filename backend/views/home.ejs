@@ -7,10 +7,13 @@
 </head>
 <body style="padding: 0; margin: 0; display: flex; flex-direction: row;">
     <div class="sidebar" style="display: flex;background-color: #F1F0E8; width: 20%;min-height: 100vh; flex-direction: column;">
-        <select name="Database" id="">
-            <% for (var i = 0; i < info.dbs.length; i++) { %>
-                <option style="display:flex;"><%=info.dbs[i].database%></option>                        
-                <% } %>
+        <form method="post" >
+
+            <select name="Database" id="" style="width: 100%;">
+                <% for (var i = 0; i < info.dbs.length; i++) { %>
+                    <option style="display:flex;"><%=info.dbs[i].database%></option>                        
+                    <% } %>
+        </form>
 </div>
         </select>
         <div style="display: flexbox;flex-direction: column;" class="DatabaseList">
@@ -51,7 +54,7 @@
                 </form>
             </div>
             <div>
-                <% console.log(info.result)%>
+                <% if(info.result){%>
                 <% if (info.result[0].fieldCount != 0) {%>
                     <table>
                         <tr style="background-color: antiquewhite;">
@@ -69,9 +72,9 @@
                     </table>
                     <%}%>
                     
-                    <%=info.error%>
-
-            </div>
+                    
+                </div>
+                <%}%>
         </div>
     </main>
 </body>
@@ -140,7 +143,7 @@
     
     const dD = document.querySelectorAll('.DatabaseDropdown')
     dD.forEach((element,key) => {
-        element.addEventListener(('click'),(e)=>
+        element.addEventListener(('click'),e=>
     {
             if (e.target.getAttribute('open') == 'true'){
                 e.target.setAttribute('open','false')
