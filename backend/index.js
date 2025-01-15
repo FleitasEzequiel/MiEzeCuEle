@@ -1,4 +1,6 @@
 import express from "express"
+import cookieHelper from "./helpers/cookieHelper.js"
+import dbMapper from "./helpers/dbMapper.js"
 import db from "./db.js"
 import ejs from "ejs"
 const App = express()
@@ -10,67 +12,52 @@ App.listen(3000,()=>{
 
 App.get("/",async (req,res)=>{
     try {
-        console.log("lol")
+        res.sendFile("login.html",{root:"./"})        
     } catch (error) {
-        console.log(error)
+        res.send("Error al cargar").status(500)
     }
-    res.sendFile("login.html",{root:"./"})
 })
 
 App.post("/",async (req,res)=>{
-    //Renderizado completo de la página
-    const cookie = req.headers.cookie ? JSON.parse(decodeURIComponent(req.headers.cookie.split("=")[1]).slice(2,-7)) : false;
+    // Declaración de variables
+    const { Database, session, user, password,query } = req.body
+    const cookie = cookieHelper(req.headers.cookie)
     let info = {}
-    cookie.Database = req.body.Database
-    console.log('hola man',cookie)
+    
+    cookie.Database = Database
     if (req.body.session == "logout"){
         res.clearCookie("user")
     }
     try{
         const resp = await db(cookie ? cookie : req.body)
         //Crear la información necesaria para el renderizado
-        const query = await resp.query(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`  )
-        const map = []
-        await query[0].map((el)=>{
-            const indice = map.findIndex((e) => e.database == el.TABLE_SCHEMA);
-            if (indice == -1){
-                map.push({
-                    "database":el.TABLE_SCHEMA,
-                    "tables":[`${el.TABLE_NAME}`]
-                })   
-            }else{
-                map[indice].tables.push(el.TABLE_NAME)
-            }})
-        info.dbs = map
 
+        info.dbs = dbMapper(
+            await resp.query(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`  ))
         //Crear Cookie Si No Existe
         if (!cookie){
             console.log("no hay cookie")
             const session = {
-                user: req.body.user,
-                password: req.body.password,
+                user: user,
+                password: password,
             }
             res.cookie("user",session)
         }
         //----------------------
         //Si existe una consulta realizarla
-        if (req.body.query){
-            await resp.query(`USE \`${req.body.Database || "sys"}\` `)
-            const result = await resp.query(req.body.query)
-            info.result = result
-        }
-        //Mostrar todas las bases de datos existentes
-
-        
+        if (query){
+            await resp.query(`USE \`${Database || "sys"}\` `)
+                const result = await resp.query(query)
+                info.result = result
+        }        
     }catch(error){
-        console.log("error",error)
-        if (error.errorno == 1045){
+        info.error = error
+        if (error.errno == 1045){
             res.clearCookie("user")
-        }
         res.render("login.ejs",{
             title:"login",
             info:info
-        })
+        })}
     }
 
 
@@ -81,66 +68,3 @@ App.post("/",async (req,res)=>{
     })
 })
 
-App.post("/:db",async (req,res)=>{
-    console.log(req.params.db)
-    //Renderizado completo de la página
-    const cookie = req.headers.cookie ? JSON.parse(decodeURIComponent(req.headers.cookie.split("=")[1]).slice(2,-7)) : false;
-    let info = {}
-    if (req.body.session == "logout"){
-        res.clearCookie("user")
-    }
-    try{
-        const resp = await db(cookie ? cookie : req.body)
-        //Crear la información necesaria para el renderizado
-        const query = await resp.query(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`  )
-        const map = []
-        await query[0].map((el)=>{
-            const indice = map.findIndex((e) => e.database == el.TABLE_SCHEMA);
-            if (indice == -1){
-                map.push({
-                    "database":el.TABLE_SCHEMA,
-                    "tables":[`${el.TABLE_NAME}`]
-                })   
-            }else{
-                map[indice].tables.push(el.TABLE_NAME)
-            }})
-        info.dbs = map
-
-        //Crear Cookie Si No Existe
-        if (!cookie){
-            console.log("no hay cookie")
-            const session = {
-                user: req.body.user,
-                password: req.body.password,
-                database: req.body.database
-            }
-            res.cookie("user",session)
-        }
-        //----------------------
-        //Si existe una consulta realizarla
-        if (req.body.query){
-            await resp.query('USE ?', 'sys')
-            const result = await resp.query(req.body.query)
-            info.result = result
-        }
-        //Mostrar todas las bases de datos existentes
-
-        
-    }catch(error){
-        console.log("error",error)
-        if (error.errorno == 1045){
-            res.clearCookie("user")
-        }
-        res.sendFile("icons",{root:"./"})
-        res.render("login.ejs",{
-            title:"login",
-            info:info
-        })
-    }
-
-
-    res.render("home.ejs",{
-        title:"home",
-        info:info
-    })
-})

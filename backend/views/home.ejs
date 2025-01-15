@@ -45,14 +45,17 @@
     </div>
     </div>
     <main style="display:inline-flex; width: 100%; flex-direction: column;">
-        <div style="display:grid; grid-template-rows: 15% 65% 20%;width: 100%; height:100%;">
+        <div style="display: flex; flex-direction: column;">
             <div style="display:flex; justify-content: center;align-items: center;">
+                <%if (info.error){%>
+                    <h1><%-info.error%></h1>
+                <%}%>
                 <form  method="post" >
                     <input type="text" name="query" placeholder="Escribir consulta acá...">
                     <button >Query</button>
                 </form>
             </div>
-            <div style="display: flex;">
+            <div style="display: flex; flex-direction: column; width: 90%; align-items: center;">
                 <% if(info.result){%>
                 <% if (info.result[0].fieldCount != 0) {%>
                     <table>
