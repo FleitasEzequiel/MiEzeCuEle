@@ -21,6 +21,8 @@ App.post("/",async (req,res)=>{
     //Renderizado completo de la página
     const cookie = req.headers.cookie ? JSON.parse(decodeURIComponent(req.headers.cookie.split("=")[1]).slice(2,-7)) : false;
     let info = {}
+    cookie.Database = req.body.Database
+    console.log('hola man',cookie)
     if (req.body.session == "logout"){
         res.clearCookie("user")
     }
@@ -47,7 +49,6 @@ App.post("/",async (req,res)=>{
             const session = {
                 user: req.body.user,
                 password: req.body.password,
-                database: req.body.database
             }
             res.cookie("user",session)
         }
@@ -75,7 +76,8 @@ App.post("/",async (req,res)=>{
 
     res.render("home.ejs",{
         title:"home",
-        info:info
+        info:info,
+        session:cookie
     })
 })
 
