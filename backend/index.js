@@ -20,17 +20,16 @@ App.get("/",async (req,res)=>{
 
 App.post("/",async (req,res)=>{
     // Declaración de variables
-    const { Database, session, user, password,query } = req.body
+    const { Database, user, password,query } = req.body
     const cookie = cookieHelper(req.headers.cookie)
+    cookie ? cookie.Database = Database : false 
     let info = {}
     
-    cookie.Database = Database
     if (req.body.session == "logout"){
         res.clearCookie("user")
     }
     try{
         const resp = await db(cookie ? cookie : req.body)
-        //Crear la información necesaria para el renderizado
 
         info.dbs = dbMapper(
             await resp.query(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`  ))
