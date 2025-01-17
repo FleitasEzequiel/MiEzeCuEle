@@ -46,19 +46,21 @@
     </div>
     <main style="display:inline-flex; width: 100%; flex-direction: column;">
         <div style="display: flex; flex-direction: column;">
-            <div style="display:flex; justify-content: center;align-items: center;">
+            <div style="display: flex; background-color: rgb(255, 112, 112); margin:10px; border-radius: 16px; padding:4px;">
                 <%if (info.error){%>
                     <h1><%-info.error%></h1>
                 <%}%>
+            </div>
+            <div style="display:flex; justify-content: center;align-items: center;">
                 <form  method="post" >
                     <input type="text" name="query" placeholder="Escribir consulta acá...">
                     <button >Query</button>
                 </form>
             </div>
-            <div style="display: flex; flex-direction: column; width: 90%; align-items: center;">
+            <div style="display: flex; flex-direction: column; width: 100%; align-items: center;">
                 <% if(info.result){%>
                 <% if (info.result[0].fieldCount != 0) {%>
-                    <table>
+                    <table style="width: 90%;">
                         <tr >
                             <% for (var i = 0; i < info.result[1].length; i++) { %>
                                 <th><%=info.result[1][i].name%></th>
