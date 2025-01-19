@@ -58,6 +58,9 @@
                 </form>
             </div>
             <div style="display: flex; flex-direction: column; width: 100%; align-items: center;">
+            <%console.log(info.result[0] == "ResultSetHeader")%>
+            <%console.log(info.result[0])%>
+
                 <% if(info.result){%>
                 <% if (info.result[0].fieldCount != 0) {%>
                     <table style="width: 90%;">
