@@ -46,11 +46,11 @@
     </div>
     <main style="display:inline-flex; width: 100%; flex-direction: column;">
         <div style="display: flex; flex-direction: column;">
+            <%if (info.error){%>
             <div style="display: flex; background-color: rgb(255, 112, 112); margin:10px; border-radius: 16px; padding:4px;">
-                <%if (info.error){%>
                     <h1><%-info.error%></h1>
+                </div>
                 <%}%>
-            </div>
             <div style="display:flex; justify-content: center;align-items: center;">
                 <form  method="post" >
                     <input type="text" name="query" placeholder="Escribir consulta acá...">
@@ -58,6 +58,7 @@
                 </form>
             </div>
             <div style="display: flex; flex-direction: column; width: 100%; align-items: center;">
+            
             <%console.log(info.result[0] == "ResultSetHeader")%>
             <%console.log(info.result[0])%>
 
