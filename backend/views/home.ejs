@@ -154,8 +154,8 @@
 }
 </style>
 <script>
-    console.log("last db",<%-info.dB%>)
     const renderTables = (parent,tables) =>{
+        console.log("last db",<%-info.dbs.Database%>)
         const $tables = document.createElement("div")
         tables.forEach((table)=>{
             const $table = document.createElement("div")
