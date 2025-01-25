@@ -35,10 +35,7 @@
                         style="cursor:pointer;display:flex; flex-direction:column; "
                         ondblclick="
                     sessionStorage.setItem('db',event.target.innerText.split('\n')[0])">
-                         <%=info.dbs[i].database%>
-                        <% for (var j = 0; j < info.dbs[i].tables.length; j++) { %>
-                            <p style="display:flex;"><%=info.dbs[i].tables[j]%></p>                        
-                            <% } %>
+
             </div>
               <% } %>
         </div> -->
@@ -159,7 +156,7 @@
         const $tables = document.createElement("div")
         tables.forEach((table)=>{
             const $table = document.createElement("div")
-            $table.innerText = table
+            $table.innerText = table.includes(";") ? table.substr(0,-1) : table
             $table.className = "databaseTable"
             $tables.appendChild($table)
         })
