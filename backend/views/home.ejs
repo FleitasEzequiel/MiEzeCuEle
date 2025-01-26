@@ -48,7 +48,7 @@
                     <h1><%-info.error%></h1>
                 </div>
                 <%}%>
-            <div style="display:flex; justify-content: center;align-items: center;">
+            <div  class="query" style="display:flex; justify-content: center;align-items: center; background-color: wheat; min-height: 60vh;">
                 <form  method="post" >
                     <input type="text" name="query" placeholder="Escribir consulta acá...">
                     <button >Query</button>
@@ -61,12 +61,14 @@
                 <% if (info.result[0].fieldCount != 0) {%>
                     <table style="width: 90%;">
                         <tr >
+                            <th style="width: 5vh;"></th>
                             <% for (var i = 0; i < info.result[1].length; i++) { %>
                                 <th><%=info.result[1][i].name%></th>
                               <% } %>
                         </tr>
                         <% for (var i = 0; i < Object.values(info.result[0]).length; i++) { %>
                             <tr>
+                                <td style="text-align: center;"><%=i%></td>
                            <% for (var j = 0; j < Object.values(info.result[0][i]).length; j++) { %>
                             <td><%=Object.values(info.result[0][i])[j]%></td>
                            <% } %>
@@ -135,7 +137,6 @@
     }
     .selectDb{
         height: 8vh;
-        border-radius: 10px;
         text-align: center;
     }
     .selectDb>option{
@@ -152,7 +153,6 @@
 </style>
 <script>
     const renderTables = (parent,tables) =>{
-        console.log("last db",<%-info.dbs.Database%>)
         const $tables = document.createElement("div")
         tables.forEach((table)=>{
             const $table = document.createElement("div")
