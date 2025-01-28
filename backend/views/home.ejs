@@ -5,83 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MiEzeCuEle</title>
 </head>
-<body style="padding: 0; margin: 0; display: flex; flex-direction: row;">
-    <%let hola = []%>
-    <div class="sidebar" style="display: flex;background-color: #F1F0E8; width: 20%;min-height: 100vh; flex-direction: column;">
-        <form method="post" onchange="console.log('<%-info.dbs[1].database%>')">
-            <select name="Database" id="" class="selectDb" style="width: 100%;" required >
-            <% for (var i = 0; i < info.dbs.length; i++) { %>
-                    <option style="display:flex;"><%=info.dbs[i].database%></option>                        
-                    <% } %>
-                </select>
-        </form>
-        <div style="display: flexbox;flex-direction: column;" class="DatabaseList">
-            <% for(var i = 0; i <= info.dbs[0].tables.length; i++) {%>
-                <%} %>
-            <!-- <% for (var i = 0; i < info.dbs.length; i++) { %>
-
-                    <div onclick="
-                    console.log(event.target)
-                    const hola = document.createElement('div')
-                    hola.innerHTML = 'Hola'
-                        event.target.appendChild(hola)"
-                        open="false"
-                        style="cursor:pointer;display:flex; flex-direction:column; "
-                        ondblclick="
-                    sessionStorage.setItem('db',event.target.innerText.split('\n')[0])">
-
-            </div>
-              <% } %>
-        </div> -->
-        </div>
-    </div>
-    </div>
+<body style="padding: 0; margin: 0; display: flex; flex-direction: row;">   
+    <div class="sideBar"></div>
     <main style="display:inline-flex; width: 100%; flex-direction: column;">
         <div style="display: flex; flex-direction: column;">
-            <%if (info.error){%>
+            <% if (info.error) { %>
             <div style="display: flex; background-color: rgb(255, 112, 112); margin:10px; border-radius: 16px; padding:4px;">
-                    <h1><%-info.error%></h1>
-                </div>
-                <%}%>
-            <div  class="query" style="display:flex; justify-content: center;align-items: center; background-color: wheat; min-height: 60vh;">
-                <form  method="post" >
+                <h1><%- info.error %></h1>
+            </div>
+            <% } %>
+            <div class="query" style="display:flex; justify-content: center; align-items: center; background-color: wheat; min-height: 60vh;">
+                <form method="post">
                     <input type="text" name="query" placeholder="Escribir consulta acá...">
-                    <button >Query</button>
+                    <button>Query</button>
                 </form>
             </div>
             <div style="display: flex; flex-direction: column; width: 100%; align-items: center;">
-                <% if(info.result){%>
-                <% if (info.result[0].fieldCount != 0) {%>
+                <% if (info.result) { %>
+                <% if (info.result[0].fieldCount != 0) { %>
                     <table style="width: 90%;">
-                        <tr >
+                        <tr>
                             <th style="width: 5vh;"></th>
                             <% for (var i = 0; i < info.result[1].length; i++) { %>
-                                <th><%=info.result[1][i].name%></th>
-                              <% } %>
+                                <th><%= info.result[1][i].name %></th>
+                            <% } %>
                         </tr>
                         <% for (var i = 0; i < Object.values(info.result[0]).length; i++) { %>
                             <tr>
-                                <td style="text-align: center;"><%=i%></td>
-                           <% for (var j = 0; j < Object.values(info.result[0][i]).length; j++) { %>
-                            <td><%=Object.values(info.result[0][i])[j]%></td>
-                           <% } %>
-                        </tr>
-                          <% } %>
+                                <td style="text-align: center;"><%= i %></td>
+                                <% for (var j = 0; j < Object.values(info.result[0][i]).length; j++) { %>
+                                    <td><%= Object.values(info.result[0][i])[j] %></td>
+                                <% } %>
+                            </tr>
+                        <% } %>
                     </table>
-                    <%}%>
-                    
-                    
-                </div>
-                <%}%>
+                <% } %>
+                <% } %>
+            </div>
         </div>
     </main>
+    <script>
+        const MY_CONSTANT = "This is a constant from the script!";
+        document.addEventListener("DOMContentLoaded", function() {
+            const constantDisplay = document.createElement("h1");
+            constantDisplay.textContent = MY_CONSTANT;
+            document.body.appendChild(constantDisplay);
+        });
+    </script>
 </body>
-
-<style>
-    body{
-        background-color:#F9FBFC
-    }
-
+</html>
 
     /* Tablas */
     th{
@@ -145,28 +117,72 @@
 }
 </style>
 <script>
-    const renderTables = (parent,tables) =>{
-        const $tables = document.createElement("div")
-        tables.forEach((table)=>{
-            const $table = document.createElement("div")
-            $table.innerText = table.includes(";") ? table.substr(0,-1) : table
-            $table.className = "databaseTable"
-            $tables.appendChild($table)
-        })
-        parent.getAttribute('open') == 'true' ? 
-        parent.childNodes.forEach(el=> parent.removeChild(parent.lastElementChild)):
-        parent.appendChild($tables) 
-    }
+        var useState = (initialValue) => {
+            function setValue(newValue){
+                console.log(newValue)
+            }
+            return [ initialValue, setValue]
+        }
+        const [db,setDb] = useState(2)
+
+        function renderSideBar(){
+            const $sideBar = document.querySelector(".sideBar")
+
+
+            $sideBarDiv = document.createElement("div")
+            $sideBarForm = document.createElement("form")
+            $sideBarSelect = document.createElement("select")
+            const hola = "hola"
+            for (let i = 0; i < 1; i++) {
+                <%console.log(i)%>
+            }          
+
+            $sideBarDiv.style = "display: flex;background-color: #F1F0E8;min-height: 100vh; flex-direction: column;"
+            $sideBarSelect.style = "width: 100%;"
+
+            $sideBarForm.appendChild($sideBarSelect)
+            $sideBarDiv.appendChild($sideBarForm)
+            $sideBar.appendChild($sideBarDiv)
+    //         $sideBar.innerHTML = `
+    //             <div class="sidebar" style="display: flex;background-color: #F1F0E8;min-height: 100vh; flex-direction: column;">
+    //     <form method="post">
+    //         <select name="Database" id="" class="selectDb" style="width: 100%;" required onchange="setDb('hola')" >
+    //         <% for (var i = 0; i < info.dbs.length; i++) { %>
+    //                 <option style="display:flex;"><%=info.dbs[i].database%></option>                        
+    //                 <% } %>
+    //             </select>
+    //     </form>
+    //     <div style="display: flexbox;flex-direction: column;" class="DatabaseList">
+    //         <% for(var i = 0; i <= info.dbs[0].tables.length; i++) {%>
+    //             <div>Hola</div>
+    //             <%} %>
+    //     </div>
+    // </div>
+    //         `
+        }
+        renderSideBar()
+    // const renderTables = (parent,tables) =>{
+    //     const $tables = document.createElement("div")
+    //     tables.forEach((table)=>{
+    //         const $table = document.createElement("div")
+    //         $table.innerText = table.includes(";") ? table.substr(0,-1) : table
+    //         $table.className = "databaseTable"
+    //         $tables.appendChild($table)
+    //     })
+    //     parent.getAttribute('open') == 'true' ? 
+    //     parent.childNodes.forEach(el=> parent.removeChild(parent.lastElementChild)):
+    //     parent.appendChild($tables) 
+    // }
     
-    const dD = document.querySelectorAll('.DatabaseDropdown')
-    dD.forEach((element,key) => {
-        element.addEventListener(('click'),e=>
-    {
-            if (e.target.getAttribute('open') == 'true'){
-                e.target.setAttribute('open','false')
-            }else{
-                        e.target.setAttribute('open','true')
-                    }
-    })})
+    // const dD = document.querySelectorAll('.DatabaseDropdown')
+    // dD.forEach((element,key) => {
+    //     element.addEventListener(('click'),e=>
+    // {
+    //         if (e.target.getAttribute('open') == 'true'){
+    //             e.target.setAttribute('open','false')
+    //         }else{
+    //                     e.target.setAttribute('open','true')
+    //                 }
+    // })})
 </script>
 </html>
