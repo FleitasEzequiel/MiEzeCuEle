@@ -6,7 +6,16 @@
     <title>MiEzeCuEle</title>
 </head>
 <body style="padding: 0; margin: 0; display: flex; flex-direction: row;">   
-    <div class="sideBar"></div>
+    <div class="sideBar" onchange="<%console.log('chi')%>">
+        <form action="">
+            <select name="" id="">
+                <% info.dbs.forEach(element => {%>
+                    <option><%=element.database%></option>
+                <%}); %>
+            </select>
+        </form>
+        <% function ohnio(){console.log('oh nio')}%>
+    </div>
     <main style="display:inline-flex; width: 100%; flex-direction: column;">
         <div style="display: flex; flex-direction: column;">
             <% if (info.error) { %>
@@ -44,17 +53,9 @@
             </div>
         </div>
     </main>
-    <script>
-        const MY_CONSTANT = "This is a constant from the script!";
-        document.addEventListener("DOMContentLoaded", function() {
-            const constantDisplay = document.createElement("h1");
-            constantDisplay.textContent = MY_CONSTANT;
-            document.body.appendChild(constantDisplay);
-        });
-    </script>
-</body>
-</html>
 
+
+<style>
     /* Tablas */
     th{
         background-color: #E5E1DA; 
@@ -125,24 +126,24 @@
         }
         const [db,setDb] = useState(2)
 
-        function renderSideBar(){
-            const $sideBar = document.querySelector(".sideBar")
+        // function renderSideBar(){
+        //     const $sideBar = document.querySelector(".sideBar")
 
 
-            $sideBarDiv = document.createElement("div")
-            $sideBarForm = document.createElement("form")
-            $sideBarSelect = document.createElement("select")
-            const hola = "hola"
-            for (let i = 0; i < 1; i++) {
-                <%console.log(i)%>
-            }          
+        //     $sideBarDiv = document.createElement("div")
+        //     $sideBarForm = document.createElement("form")
+        //     $sideBarSelect = document.createElement("select")
+        //     const hola = "hola"
+        //     for (let i = 0; i < 1; i++) {
+        //         <%console.log(i)%>
+        //     }          
 
-            $sideBarDiv.style = "display: flex;background-color: #F1F0E8;min-height: 100vh; flex-direction: column;"
-            $sideBarSelect.style = "width: 100%;"
+        //     $sideBarDiv.style = "display: flex;background-color: #F1F0E8;min-height: 100vh; flex-direction: column;"
+        //     $sideBarSelect.style = "width: 100%;"
 
-            $sideBarForm.appendChild($sideBarSelect)
-            $sideBarDiv.appendChild($sideBarForm)
-            $sideBar.appendChild($sideBarDiv)
+        //     $sideBarForm.appendChild($sideBarSelect)
+        //     $sideBarDiv.appendChild($sideBarForm)
+        //     $sideBar.appendChild($sideBarDiv)
     //         $sideBar.innerHTML = `
     //             <div class="sidebar" style="display: flex;background-color: #F1F0E8;min-height: 100vh; flex-direction: column;">
     //     <form method="post">
@@ -159,6 +160,15 @@
     //     </div>
     // </div>
     //         `
+        function renderSideBar(){
+            const chi = 
+            <%
+            let arr = []
+            for(let l = 0; l < info.dbs.length; l++){%>
+            <%arr.push(`${info.dbs[l].database}`)%>
+            <%}%>
+            '<%-arr%>'
+            console.log(chi)
         }
         renderSideBar()
     // const renderTables = (parent,tables) =>{
