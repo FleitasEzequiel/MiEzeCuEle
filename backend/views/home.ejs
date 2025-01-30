@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MiEzeCuEle</title>
 </head>
-<body style="padding: 0; margin: 0; display: flex; flex-direction: row;">   
-    <div class="sideBar" onchange="<%console.log('chi')%>">
-        <form action="">
+<body style="padding: 0; margin: 0; display: flex; flex-direction: row; min-height: screen;">   
+    <div class="sideBar" >
+        <form action="" onchange="renderSideBar(event.target.value)">
             <select name="" id="">
                 <% info.dbs.forEach(element => {%>
                     <option><%=element.database%></option>
                 <%}); %>
             </select>
         </form>
-        <% function ohnio(){console.log('oh nio')}%>
+        <div class="tablesDisplay"></div>
     </div>
     <main style="display:inline-flex; width: 100%; flex-direction: column;">
         <div style="display: flex; flex-direction: column;">
@@ -70,36 +70,12 @@
         color: rgb(110, 102, 102);
         border-radius: 16px;
     }
-    .sidebar{
+    .sideBar{
         border: 2px ;
         border-color:gray;
         border-style: solid;
-        border-radius: 10px;
         position: sticky;
-    }
-    .DatabaseDropdown{
-        display: flex;
-        cursor: pointer;
-        border-radius: 4px;
-        min-height: 6vh;
-        width: 90%;
-        justify-self: center;
-        line-height: 6vh;
-        align-items: center;
-        justify-content: space-around;
-        margin-bottom: 1vh;
-        flex-direction: column;
-    }
-    .DatabaseDropdown:hover{
-        background-color: #E5E1DA;
-    }
-    .DatabaseDropdown[open="true"]{
-        box-shadow: 0px 3px 0px  
-        
-    }
-    .DatabaseDropdown>div{
-        width: 100%;
-        text-align: center;
+        min-width: screen;
     }
     .selectDb{
         height: 8vh;
@@ -118,71 +94,24 @@
 }
 </style>
 <script>
-        var useState = (initialValue) => {
-            function setValue(newValue){
-                console.log(newValue)
-            }
-            return [ initialValue, setValue]
-        }
-        const [db,setDb] = useState(2)
-
-        // function renderSideBar(){
-        //     const $sideBar = document.querySelector(".sideBar")
-
-
-        //     $sideBarDiv = document.createElement("div")
-        //     $sideBarForm = document.createElement("form")
-        //     $sideBarSelect = document.createElement("select")
-        //     const hola = "hola"
-        //     for (let i = 0; i < 1; i++) {
-        //         <%console.log(i)%>
-        //     }          
-
-        //     $sideBarDiv.style = "display: flex;background-color: #F1F0E8;min-height: 100vh; flex-direction: column;"
-        //     $sideBarSelect.style = "width: 100%;"
-
-        //     $sideBarForm.appendChild($sideBarSelect)
-        //     $sideBarDiv.appendChild($sideBarForm)
-        //     $sideBar.appendChild($sideBarDiv)
-    //         $sideBar.innerHTML = `
-    //             <div class="sidebar" style="display: flex;background-color: #F1F0E8;min-height: 100vh; flex-direction: column;">
-    //     <form method="post">
-    //         <select name="Database" id="" class="selectDb" style="width: 100%;" required onchange="setDb('hola')" >
-    //         <% for (var i = 0; i < info.dbs.length; i++) { %>
-    //                 <option style="display:flex;"><%=info.dbs[i].database%></option>                        
-    //                 <% } %>
-    //             </select>
-    //     </form>
-    //     <div style="display: flexbox;flex-direction: column;" class="DatabaseList">
-    //         <% for(var i = 0; i <= info.dbs[0].tables.length; i++) {%>
-    //             <div>Hola</div>
-    //             <%} %>
-    //     </div>
-    // </div>
     //         `
-        function renderSideBar(){
-            const chi = 
+        function renderSideBar(database){
             <%
-            let arr = []
-            for(let l = 0; l < info.dbs.length; l++){%>
-            <%arr.push(`${info.dbs[l].database}`)%>
-            <%}%>
+            let arr = JSON.stringify(info.dbs)%>
             '<%-arr%>'
-            console.log(chi)
-        }
-        renderSideBar()
-    // const renderTables = (parent,tables) =>{
-    //     const $tables = document.createElement("div")
-    //     tables.forEach((table)=>{
-    //         const $table = document.createElement("div")
-    //         $table.innerText = table.includes(";") ? table.substr(0,-1) : table
-    //         $table.className = "databaseTable"
-    //         $tables.appendChild($table)
-    //     })
-    //     parent.getAttribute('open') == 'true' ? 
-    //     parent.childNodes.forEach(el=> parent.removeChild(parent.lastElementChild)):
-    //     parent.appendChild($tables) 
-    // }
+            const info = JSON.parse('<%-arr%>')
+            const index = info.findIndex((el)=>el.database == database)
+
+        const $tablesDisplay = document.querySelector(".tablesDisplay")
+        const $tables = document.createElement("div")
+        $tablesDisplay.innerHTML = ""
+        info[index].tables.forEach(table => {
+            const $table = document.createElement("div")
+            $table.innerText = table
+            $tables.appendChild($table)
+        });
+        $tablesDisplay.appendChild($tables)
+    }
     
     // const dD = document.querySelectorAll('.DatabaseDropdown')
     // dD.forEach((element,key) => {
