@@ -21,6 +21,7 @@ App.get("/",async (req,res)=>{
 App.post("/",async (req,res)=>{
     // Declaración de variables
     const { Database, user, password,query } = req.body
+    console.log(req.body)
     const cookie = cookieHelper(req.headers.cookie)
     cookie ? cookie.Database = Database : false 
     let info = {}
