@@ -7,15 +7,17 @@
 </head>
 <body style="padding: 0; margin: 0; display: flex; flex-direction: row; min-height: 100vh;">   
     <div class="sideBar" >
+        <div style="border-bottom-width: 2px;border-bottom-style: solid;border-color:gray">
+
             <select name="Database" class="selectDb" id="" onchange="renderSideBar(event.target.value);
-            
             document.querySelector('.tablesDisplay').removeEventListener((e)=>{
-            e.target.toggleAttribute('open')
-        })">
+                e.target.toggleAttribute('open')
+            })">
                 <% info.dbs.forEach(element => {%>
                     <option ><%=element.database%></option>
-                <%}); %>
-            </select>
+                    <%}); %>
+                </select>
+        </div>
         <div class="tablesDisplay">
         </div>
     </div>
@@ -86,6 +88,8 @@
         text-align: center;
         margin:10px;
         border-radius: 8px;
+        border:0px; 
+        outline: 0px;
     }
     .table{
         visibility: hidden;
