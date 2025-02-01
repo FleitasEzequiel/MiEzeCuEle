@@ -9,16 +9,13 @@
     <div class="sideBar" >
         <div style="border-bottom-width: 2px;border-bottom-style: solid;border-color:gray">
 
-            <select name="Database" class="selectDb" id="" onchange="renderSideBar(event.target.value);
-            document.querySelector('.tablesDisplay').removeEventListener((e)=>{
-                e.target.toggleAttribute('open')
-            })">
+            <select name="Database" class="selectDb" id="" onchange="renderSideBar(event.target.value);">
                 <% info.dbs.forEach(element => {%>
                     <option ><%=element.database%></option>
                     <%}); %>
                 </select>
         </div>
-        <div class="tablesDisplay">
+        <div class="tablesDisplay" onclick="event.currentTarget.toggleAttribute('open')">
         </div>
     </div>
     <main style="display:inline-flex; width: 100%; flex-direction: column;">
@@ -46,7 +43,7 @@
                         </tr>
                         <% for (var i = 0; i < Object.values(info.result[0]).length; i++) { %>
                             <tr>
-                                <td style="text-align: center;"><%= i %></td>
+                                <td style="text-align: center; background-color: #E5E1DA;"><%= i %></td>
                                 <% for (var j = 0; j < Object.values(info.result[0][i]).length; j++) { %>
                                     <td><%= Object.values(info.result[0][i])[j] %></td>
                                 <% } %>
@@ -83,7 +80,7 @@
         width: 20%;
     }
     .selectDb{
-        height: 8vh;
+        height: 10vh;
         width: 90%;
         text-align: center;
         margin:10px;
@@ -101,21 +98,13 @@
     }
 </style>
 <script>
+
     //         `
-        function renderSideBar(){
-            const database = document.querySelector("[name='Database']").value
-            const info = JSON.parse('<%-JSON.stringify(info.dbs)%>')
-            const index = info.findIndex((el)=>el.database == database)
-        const $tablesDisplay = document.querySelector(".tablesDisplay")
+    function renderTables(info = Array,index = String){
         const $tables = document.createElement("div")
         $tables.className = "tables"
-        const $sectionTitle = document.createElement("h1")
-        $sectionTitle.textContent = "Tables"
-        $tablesDisplay.innerHTML = ""
-        $tablesDisplay.addEventListener("click",()=>{
-            console.log('hola man',$tablesDisplay)
-            $tablesDisplay.toggleAttribute("open")
-        })
+        const $sectionTitle = document.createElement("p")
+        $sectionTitle.textContent = "Tables" 
         
         $tables.appendChild($sectionTitle)
         info[index].tables.forEach(table => {
@@ -124,9 +113,20 @@
             $table.className = "table"
             $tables.appendChild($table)
         });
+        return $tables
+    }
+        function renderSideBar(){
+            const database = document.querySelector("[name='Database']").value
+            const info = JSON.parse('<%-JSON.stringify(info.dbs)%>')
+            const index = info.findIndex((el)=>el.database == database)
+        const $tablesDisplay = document.querySelector(".tablesDisplay")
+        $tablesDisplay.innerHTML = ""
+
+        const $tables = renderTables(info,index)
         $tablesDisplay.appendChild($tables)
     }
     renderSideBar()
+
     
     // const dD = document.querySelectorAll('.DatabaseDropdown')
     // dD.forEach((element,key) => {
