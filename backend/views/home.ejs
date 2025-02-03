@@ -18,14 +18,22 @@
         <div class="tablesDisplay" onclick="event.currentTarget.toggleAttribute('open')">
         </div>
     </div>
-    <main style="display:inline-flex; width: 100%; flex-direction: column;">
-        <div style="display: flex; flex-direction: column;">
+    <main style="display:inline-flex; width: 80%; flex-direction: column;">
+        <!-- <div style="display: flex; flex-direction: column;">
             <% if (info.error) { %>
             <div style="display: flex; background-color: rgb(255, 112, 112); margin:10px; border-radius: 16px; padding:4px;">
                 <h1><%- info.error %></h1>
             </div>
-            <% } %>
-            <div class="query" style="display:flex; justify-content: center; align-items: center; background-color: wheat; min-height: 60vh;">
+            <% } %> -->
+            <div class="input" style="display:flex;flex-direction:column; background-color: red;min-height: 45%;">
+                <div class="inputHeader" style="display:flex;height:15%;width: 100%; justify-content: end;"> <button class="buttonPrimary">Query</button></div>
+                <div class="inputText" style="display: flex; height: 85%;width: 100%; padding: 2px 0;"> <textarea name="Query" id=""></textarea></div>
+            </div>
+            <div class="Output" style="display:flex; background-color: blue;min-height: 55%;">
+                <div class="outputHeader"></div>
+                
+            </div>
+            <!-- <div class="query" style="display:flex; justify-content: center; align-items: center; background-color: wheat; min-height: 60vh;">
                 <form method="post">
                     <input type="text" name="query" placeholder="Escribir consulta acá...">
                     <button>Query</button>
@@ -53,7 +61,7 @@
                 <% } %>
                 <% } %>
             </div>
-        </div>
+        </div> -->
     </main>
 
 
@@ -96,11 +104,28 @@
     .tablesDisplay[open]>.tables>.table{
         visibility: visible;
     }
+    .buttonPrimary{
+        background-color: blue;
+        border: 0px;
+        border-radius: 6px;
+        color:white;
+        margin:4px;
+        padding: 0 10px;
+    }
 </style>
 <script>
 
     //         `
-    function renderTables(info = Array,index = String){
+    function renderTables(info,index){
+  
+    }
+        function renderSideBar(){
+            const database = document.querySelector("[name='Database']").value
+            const info = JSON.parse('<%-JSON.stringify(info.dbs)%>')
+            const index = info.findIndex((el)=>el.database == database)
+        const $tablesDisplay = document.querySelector(".tablesDisplay")
+        $tablesDisplay.innerHTML = ""
+
         const $tables = document.createElement("div")
         $tables.className = "tables"
         const $sectionTitle = document.createElement("p")
@@ -113,16 +138,6 @@
             $table.className = "table"
             $tables.appendChild($table)
         });
-        return $tables
-    }
-        function renderSideBar(){
-            const database = document.querySelector("[name='Database']").value
-            const info = JSON.parse('<%-JSON.stringify(info.dbs)%>')
-            const index = info.findIndex((el)=>el.database == database)
-        const $tablesDisplay = document.querySelector(".tablesDisplay")
-        $tablesDisplay.innerHTML = ""
-
-        const $tables = renderTables(info,index)
         $tablesDisplay.appendChild($tables)
     }
     renderSideBar()
