@@ -28,11 +28,12 @@
 
             <form method="post" class="Input" >
                     <div class="inputHeader" style="display:flex;height:15%;width: 100%; justify-content: end;"> <button class="buttonPrimary">Query</button></div>
-                    <div class="inputText" style="display: flex; height: 85%;width: 100%; padding: 2px 0;"> <textarea name="query" id=""></textarea></div>
+                    <div class="inputText" style="display: flex; height: 85%;width: 100%; padding: 2px 0;">
+                         <div name="query" contenteditable="true" ></div>
+                        </div>
             </form>
             <div class="Output" >
                 <div class="outputHeader">
-                    a
                 </div>
                 <div class="outputTable">
 
@@ -186,10 +187,24 @@
     }
     renderSideBar()
     renderOutput()
-    let text = String
+
+
+
     document.querySelector("[name='query']").addEventListener("input",(e)=>{
-        text = text + e.data
-        console.log(text)
+        console.log(e)
+        const span = e.target.innerHTML
+        let text = span.split(' ')
+        const index = text.findIndex((word)=>word=='Hola') 
+        if (index !== -1){
+            text[index] = '<a style="color:red">Hola</a>'
+        }
+        const newString = text.toString().split(',').join(" ")
+        if (e.target.innerHTML !== text.toString().split(',').join(" ")){
+            console.log('OH NIO')
+            e.target.innerHTML = ''
+            e.target.insertAdjacentHTML("beforeBegin",text.toString().split(',').join(" ") );
+        }
+        // e.target.insertAdjacentHTML("") = 
     })
 
     
