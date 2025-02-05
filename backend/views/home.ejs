@@ -29,7 +29,7 @@
             <form method="post" class="Input" >
                     <div class="inputHeader" style="display:flex;height:15%;width: 100%; justify-content: end;"> <button class="buttonPrimary">Query</button></div>
                     <div class="inputText" style="display: flex; height: 85%;width: 100%; padding: 2px 0;">
-                         <div name="query" contenteditable="true" ></div>
+                         <textarea name="query" ></textarea>
                         </div>
             </form>
             <div class="Output" >
@@ -91,6 +91,15 @@
         background-color: rgb(161, 161, 161);
         height: 5vh;
     }
+    .tables{
+        display: flexbox;
+        flex-direction: column;
+        overflow: hidden;
+    }
+    .tablesDisplay{
+        display: flex;
+        max-height: 20%;
+    }
     .tablesDisplay[open]>.tables>.table{
         visibility: visible;
     }
@@ -120,7 +129,7 @@
     }
     .Output{
         display:flex; 
-        min-height: 54%;
+        min-height: 55%;
         flex-direction: column;
     }
     .outputHeader{
@@ -129,7 +138,8 @@
         border-bottom: 2px solid var(--contrast) ;
     }
     .outputTable{
-        display: flexbox;
+        display: flex;
+        overflow: scroll;
     }
 </style>
 <script>
