@@ -8,8 +8,7 @@
 <body style="padding: 0; margin: 0; display: flex; flex-direction: row; height: 100vh;">   
     <div class="sideBar" >
         <div style="border-bottom-width: 2px;border-bottom-style: solid;border-color:gray">
-
-            <select name="Database" class="selectDb" id="" onchange="renderSideBar(event.target.value);">
+            <select name="database" class="selectDb" id="" onchange="renderSideBar(event.target.value);">
                 <% info.dbs.forEach(element => {%>
                     <option ><%=element.database%></option>
                     <%}); %>
@@ -27,6 +26,7 @@
             <% } %> -->
 
             <form method="post" class="Input" >
+                <input type="hidden" name="Database">
                     <div class="inputHeader" style="display:flex;height:15%;width: 100%; justify-content: end;"> <button class="buttonPrimary">Query</button></div>
                     <div class="inputText" style="display: flex; height: 85%;width: 100%; padding: 2px 0;">
                          <textarea name="query" ></textarea>
@@ -68,14 +68,24 @@
         background-color: var(--gray);
     }
     table{
-        background-color: var(--contrast);
+        background-color:var(--contrast);
     }
     .sideBar{
         border-color:var(--gray);
         position: static;
         width: 20%;
         border-right: 2px solid var(--contrast);
-        height: 100%;
+        height: 100vh;
+    }
+    .tablesDisplay{
+        background-color: red;
+        max-height: 80px;
+        overflow: hidden;
+    }
+    .tables{
+
+        max-height: 20px;
+        overflow: hidden;
     }
     .selectDb{
         height: 10vh;
@@ -85,23 +95,6 @@
         border-radius: 8px;
         border:0px; 
         outline: 0px;
-    }
-    .table{
-        visibility: hidden;
-        background-color: rgb(161, 161, 161);
-        height: 5vh;
-    }
-    .tables{
-        display: flexbox;
-        flex-direction: column;
-        overflow: hidden;
-    }
-    .tablesDisplay{
-        display: flex;
-        max-height: 20%;
-    }
-    .tablesDisplay[open]>.tables>.table{
-        visibility: visible;
     }
     .buttonPrimary{
         background-color: var(--primary);
@@ -175,7 +168,8 @@
         }
     }
         function renderSideBar(){
-            const database = document.querySelector("[name='Database']").value
+            const database = document.querySelector("[name='database']").value
+            document.querySelector("[name='Database']").value = database
             const info = JSON.parse('<%-JSON.stringify(info.dbs)%>')
             const index = info.findIndex((el)=>el.database == database)
         const $tablesDisplay = document.querySelector(".tablesDisplay")
