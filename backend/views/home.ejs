@@ -130,6 +130,7 @@
         background-color: var(--gray);
         border-top: 2px solid var(--contrast) ;
         border-bottom: 2px solid var(--contrast) ;
+        
     }
     .outputTable{
         display: flex;
@@ -217,11 +218,11 @@
         if (e.data == "d"){
             const $popup = document.createElement("div")
             const $div = document.createElement("div")
-            $div.style = "background-color:white;display:flex;justify-self:center;opacity:100%;z-index:100;position:fixed;"
+            $div.style = "background-color:var --('primary');display:flex;justify-self:center;align-self:center"
             $div.innerText = "holis"
-            $popup.style = " background-color:gray; height:100vh;width:100vw; z-index:200;position:absolute;opacity: 60%"
-            $div.appendChild($popup)
-            document.body.appendChild($div)
+            $popup.style = " background-color:rgba(0,0,0,0.5); height:100vh;width:100vw;position:absolute;"
+            $popup.appendChild($div)
+            document.body.appendChild($popup)
             console.log("OH NIO")
         }
     })
