@@ -146,11 +146,30 @@
     .dbCollection{
         display: flex;
         flex-direction: column;
+        width: 70%;
     }
     .dbOption{
         display:flex;
+        justify-content: center;
+        align-items: center;
         border: 2px solid var(--contrast);
-border-radius: 8px;
+        border-radius: 8px;
+        height: 50%;
+        animation: appearDown 0.5s linear
+    }
+    .dbOption:hover{
+        transform: scale(0.95,1);
+        transition: all 0.2s ease-in-out;
+    }
+    @keyframes appearDown {
+        from{
+            transform: translateY(4vh);
+            opacity: 0;
+        }
+        to{
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
 </style>
 <script>
