@@ -147,6 +147,10 @@
         display: flex;
         flex-direction: column;
         width: 70%;
+        height: 60vh;
+        margin-top:10vh;
+        overflow-y: scroll;
+        gap:10px;
     }
     .dbOption{
         display:flex;
@@ -154,7 +158,7 @@
         align-items: center;
         border: 2px solid var(--contrast);
         border-radius: 8px;
-        height: 50%;
+        height: 20vh;
         animation: appearDown 0.5s linear
     }
     .dbOption:hover{
@@ -267,6 +271,12 @@
                 $db.innerText = db.database
                 $collection.appendChild($db)
             })
+            
+
+            const $db = document.createElement("div")
+                $db.className = "dbOption"
+                $db.innerText = "Añadir"
+                $collection.appendChild($db)
             
             $div.className = "dbBox"
             $background.style = " background-color:rgba(0,0,0,0.5); height:100vh;width:100vw;position:absolute;z-index:20; display:flex; justify-content:center;align-items:center"
