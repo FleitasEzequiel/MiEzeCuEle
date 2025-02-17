@@ -8,11 +8,12 @@
 <body style="padding: 0; margin: 0; display: flex; flex-direction: row; height: 100vh;">   
     <div class="sideBar" >
         <div style="border-bottom-width: 2px;border-bottom-style: solid;border-color:gray">
-            <select name="database" class="selectDb" id="" onchange="renderSideBar(event.target.value);">
+            <div name="database" class="selectDb" onclick="renderPopup()">Database</div>
+            <!-- <select name="database" class="selectDb" id="" onchange="renderSideBar(event.target.value);">
                 <% info.dbs.forEach(element => {%>
                     <option ><%=element.database%></option>
                     <%}); %>
-                </select>
+                </select> -->
         </div>
         <div class="tablesDisplay" onclick="event.currentTarget.toggleAttribute('open')">
         </div>
@@ -210,7 +211,7 @@
         }
     }
     function renderSideBar(){
-            const database = document.querySelector("[name='database']").value
+            const database = document.querySelector("[name='database']").value || "mysql"
             document.querySelector("[name='Database']").value = database
             const info = JSON.parse('<%-JSON.stringify(info.dbs)%>')
             const index = info.findIndex((el)=>el.database == database)
