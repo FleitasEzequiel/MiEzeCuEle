@@ -211,7 +211,7 @@
         }
     }
     function renderSideBar(){
-            const database = document.querySelector("[name='database']").value || "mysql"
+            const database = document.querySelector("[name='Database']").value || "mysql"
             document.querySelector("[name='Database']").value = database
             const info = JSON.parse('<%-JSON.stringify(info.dbs)%>')
             const index = info.findIndex((el)=>el.database == database)
@@ -272,6 +272,8 @@
                 $db.innerText = db.database
                 $db.addEventListener("click",()=>{
                     document.querySelector("[name='Database']").value = db.database
+                    document.querySelector("[name='database']").innerText = db.database
+                    renderSideBar()
                 })
                 $collection.appendChild($db)
             })
