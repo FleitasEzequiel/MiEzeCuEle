@@ -211,7 +211,8 @@
             $output.appendChild($table)
             $header.innerText = "Input: Success"
         } catch (error) {
-            $header.innerText = "Input: Error"
+
+            $header.innerText = '<%-info.error%>' || "Output: None"
             $output.innerText = '<%-info.error%>'
         }
     }
