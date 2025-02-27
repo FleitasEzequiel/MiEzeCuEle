@@ -265,8 +265,9 @@
 
     const renderPopup = (type) =>{    
         const $background = document.createElement("div")
-        $background.addEventListener("click",()=>{
-            $background.remove()})
+        $background.addEventListener("click",(e)=>{
+            if(e.target == $background){
+            $background.remove()}})
         if(type == "CHANGE"){
         const info = JSON.parse('<%-JSON.stringify(info.dbs)%>')
         console.log(info)
@@ -319,7 +320,15 @@
             const $button = document.createElement("button")
             $button.className = "buttonPrimary"
             $button.innerText = "buttonPrimary"
+            const $add = document.createElement("button")
+            $add.type = "button"
+            $add.className = "buttonPrimary"
+            $add.innerText = "Nuevo Campo"
+            $add.addEventListener("click",()=>{
+                newField()
+            })
             $form.appendChild($button)
+            $form.appendChild($add)
             $div.appendChild($form)
             $background.style = " background-color:rgba(0,0,0,0.5); height:100vh;width:100vw;position:absolute;z-index:20; display:flex; justify-content:center;align-items:center"
             $background.appendChild($div)
