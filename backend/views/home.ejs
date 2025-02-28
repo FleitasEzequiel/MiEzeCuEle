@@ -311,6 +311,7 @@
             const $input = document.createElement("input")
             const $label = document.createElement("label")
             $label.innerText = "Nombre"
+            $label.isContentEditable = true
             $input.type = "text"
             $label.appendChild($input)
             $field.appendChild($label)
