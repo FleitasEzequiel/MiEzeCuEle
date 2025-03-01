@@ -21,7 +21,7 @@ App.get("/",async (req,res)=>{
 App.post("/",async (req,res)=>{
     // Declaración de variables
     const { Database, user, password,query } = req.body
-    console.log(req.body)
+    console.log("acá",req.body)
     const cookie = cookieHelper(req.headers.cookie)
     cookie ? cookie.Database = Database : false 
     let info = {}
@@ -50,6 +50,9 @@ App.post("/",async (req,res)=>{
                 const result = await resp.query(query)
                 info.result = result
         }        
+        if (add){
+            await resp.query("CREATE DATABASE ?", newDb)
+        }
     }catch(error){
         info.error = error
         if (error.errno == 1045){
