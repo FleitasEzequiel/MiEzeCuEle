@@ -52,6 +52,9 @@ App.post("/",async (req,res)=>{
         }        
         if (add){
             await resp.query("CREATE DATABASE ?", newDb)
+            tables.forEach(table => {
+                resp.query("ADD TABLE ?", table)
+            });
         }
     }catch(error){
         info.error = error
