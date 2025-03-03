@@ -314,9 +314,10 @@
             $label.value = "Nombre"
             $label.isContentEditable = true
             $input.type = "text"
+            $input.name = "Tables"
             $label.appendChild($input)
             $field.appendChild($label)
-            $form.appendChild($field)
+            $form.appendChild($label)
             }
             newField()
             const $button = document.createElement("button")
