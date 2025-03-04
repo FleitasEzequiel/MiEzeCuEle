@@ -212,8 +212,8 @@
             $header.innerText = "Input: Success"
         } catch (error) {
 
-            $header.innerText = '<%-info.error%>' || "Output: None"
-            $output.innerText = '<%-info.error%>'
+            $header.innerText = `<%-info.error%>` || "Output: None"
+            $output.innerText = `<%-info.error%>`
         }
     }
     function renderSideBar(){
@@ -314,7 +314,7 @@
             $label.value = "Nombre"
             $label.isContentEditable = true
             $input.type = "text"
-            $input.name = "Tables"
+            $input.name = "dbName"
             $label.appendChild($input)
             $field.appendChild($label)
             $form.appendChild($label)
@@ -326,10 +326,6 @@
             const $add = document.createElement("button")
             $add.type = "button"
             $add.className = "buttonPrimary"
-            $add.innerText = "Nuevo Campo"
-            $add.addEventListener("click",()=>{
-                newField()
-            })
             $form.appendChild($button)
             $form.appendChild($add)
             $div.appendChild($form)

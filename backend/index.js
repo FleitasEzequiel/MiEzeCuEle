@@ -20,7 +20,7 @@ App.get("/",async (req,res)=>{
 
 App.post("/",async (req,res)=>{
     // Declaración de variables
-    const { Database, user, password,query } = req.body
+    const { Database, user, password,query, dbName } = req.body
     console.log("acá",req.body)
     const cookie = cookieHelper(req.headers.cookie)
     cookie ? cookie.Database = Database : false 
@@ -35,6 +35,9 @@ App.post("/",async (req,res)=>{
         info.dbs = dbMapper(
             await resp.query(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`  ))
         //Crear Cookie Si No Existe
+        info.dbs.forEach(db => {
+            console.log(db.database)
+        });
         if (!cookie){
             console.log("no hay cookie")
             const session = {
@@ -50,11 +53,9 @@ App.post("/",async (req,res)=>{
                 const result = await resp.query(query)
                 info.result = result
         }        
-        if (add){
-            await resp.query("CREATE DATABASE ?", newDb)
-            tables.forEach(table => {
-                resp.query("ADD TABLE ?", table)
-            });
+        if (dbName){
+            console.log("Hola",dbName)
+            resp.query("CREATE DATABASE ESTUDIAR;").then((res)=>console.log("CHI CHEÑOL",res))
         }
     }catch(error){
         info.error = error
