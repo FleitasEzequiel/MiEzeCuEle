@@ -181,6 +181,12 @@
             opacity: 1;
         }
     }
+    .dbBox>form{
+        display:flex; 
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
 </style>
 <script>
     //         `
@@ -311,8 +317,7 @@
             const $field = document.createElement("div")
             const $input = document.createElement("input")
             const $label = document.createElement("label")
-            $label.value = "Nombre"
-            $label.isContentEditable = true
+            $label.innerText = "Nombre"
             $input.type = "text"
             $input.name = "dbName"
             $label.appendChild($input)
@@ -322,7 +327,7 @@
             newField()
             const $button = document.createElement("button")
             $button.className = "buttonPrimary"
-            $button.innerText = "buttonPrimary"
+            $button.innerText = "Añadir"
             const $add = document.createElement("button")
             $add.type = "button"
             $add.className = "buttonPrimary"
