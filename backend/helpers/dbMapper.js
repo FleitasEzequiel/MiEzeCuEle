@@ -1,16 +1,14 @@
-function dbMapper(query) {
-    let map = []
+function dbMapper(query,dbs) {
     query[0].map((el)=>{
-        const indice = map.findIndex((e) => e.database == el.TABLE_SCHEMA);
-        if (indice == -1){
-            map.push({
-                "database":el.TABLE_SCHEMA,
-                "tables":[`${el.TABLE_NAME}`]
-            })   
+        const indice = dbs.findIndex((e) => e.Database == el.TABLE_SCHEMA);
+        if(dbs[indice].tables){
+            dbs[indice].tables.push(el.TABLE_NAME)
         }else{
-            map[indice].tables.push(el.TABLE_NAME)
-        }})
-    return map
+            dbs[indice].tables = [el.TABLE_NAME]
+        }
+    })
+    console.log(dbs)
+    return dbs
 }
 
 export default dbMapper

@@ -31,12 +31,14 @@ App.post("/",async (req,res)=>{
     }
     try{
         const resp = await db(cookie ? cookie : req.body)
-
-        info.dbs = dbMapper(
-            await resp.query(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`  ))
+        const data = 
+        await resp.query(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`  )
+        const dbs = 
+        await resp.query(`SHOW DATABASES`  )
+        info.dbs = dbMapper(data,dbs[0])
         //Crear Cookie Si No Existe
         info.dbs.forEach(db => {
-            console.log(db.database)
+            console.log(db)
         });
         if (!cookie){
             console.log("no hay cookie")

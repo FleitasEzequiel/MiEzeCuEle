@@ -9,11 +9,6 @@
     <div class="sideBar" >
         <div style="border-bottom-width: 2px;border-bottom-style: solid;border-color:gray">
             <div name="database" class="selectDb" onclick="renderPopup('CHANGE')">Database</div>
-            <!-- <select name="database" class="selectDb" id="" onchange="renderSideBar(event.target.value);">
-                <% info.dbs.forEach(element => {%>
-                    <option ><%=element.database%></option>
-                    <%}); %>
-                </select> -->
         </div>
         <div class="tablesDisplay" onclick="event.currentTarget.toggleAttribute('open')">
         </div>
@@ -226,7 +221,8 @@
             const database = document.querySelector("[name='Database']").value || "mysql"
             document.querySelector("[name='Database']").value = database
             const info = JSON.parse('<%-JSON.stringify(info.dbs)%>')
-            const index = info.findIndex((el)=>el.database == database)
+            console.log(info)
+            const index = info.findIndex((el)=>el.Database == database)
         const $tablesDisplay = document.querySelector(".tablesDisplay")
         $tablesDisplay.innerHTML = ""
 
@@ -236,13 +232,16 @@
         $sectionTitle.textContent = "Tables" 
         
         $tables.appendChild($sectionTitle)
-        info[index].tables.forEach(table => {
-            const $table = document.createElement("div")
-            $table.innerText = table
-            $table.className = "table"
-            $tables.appendChild($table)
-        });
-        $tablesDisplay.appendChild($tables)
+        console.log(index)
+        if (info[index].tables){
+            info[index].tables.forEach(table => {
+                const $table = document.createElement("div")
+                $table.innerText = table
+                $table.className = "table"
+                $tables.appendChild($table)
+            });
+            $tablesDisplay.appendChild($tables)
+        }
     }
     renderSideBar()
     renderOutput()
@@ -284,7 +283,7 @@
             info.forEach((db)=>{
                 const $db = document.createElement("div")
                 $db.className = "dbOption"
-                $db.innerText = db.database
+                $db.innerText = db.Database
                 $db.addEventListener("click",()=>{
                     document.querySelector("[name='Database']").value = db.database
                     document.querySelector("[name='database']").innerText = db.database
