@@ -57,7 +57,7 @@ App.post("/",async (req,res)=>{
         }        
         if (dbName){
             console.log("Hola",dbName)
-            resp.query("CREATE DATABASE ESTUDIAR;").then((res)=>console.log("CHI CHEÑOL",res))
+            resp.query(`CREATE DATABASE ${dbName};`)
         }
     }catch(error){
         info.error = error
