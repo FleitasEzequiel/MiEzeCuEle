@@ -2,10 +2,9 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"node --watch index.js"
+    "dev": "node --watch index.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,5 +15,8 @@
     "env": "^0.0.2",
     "express": "^4.21.1",
     "mysql2": "^3.11.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2"
   }
 }
