@@ -8,10 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const promise_1 = require("mysql2/promise");
+const promise_1 = __importDefault(require("mysql2/promise"));
 const CreateConnection = (data) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("holiwis", data);
     // const {host,user,password} = data 
     const Connection = yield promise_1.default.createConnection({
         host: data.host,

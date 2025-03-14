@@ -1,8 +1,10 @@
-import express from "express"
+import express, { Errback } from "express"
 import cookieHelper from "./helpers/cookieHelper.js"
 import dbMapper from "./helpers/dbMapper.js"
 import db from "./db.js"
-import ejs from "ejs"
+import { Info } from "./types.js"
+import * as ejs from "ejs"
+import { RowDataPacket } from "mysql2/promise.js"
 const App = express()
 App.use(express.urlencoded({ extended: true }))
 App.set("view engine","ejs")
@@ -20,24 +22,21 @@ App.get("/",async (req,res)=>{
 
 App.post("/",async (req,res)=>{
     // Declaración de variables
-    const { Database, user, password,query, dbName } = req.body
-    console.log("acá",req.body)
+    const { Database, user, password,query, dbName }  = req.body 
     const cookie = cookieHelper(req.headers.cookie)
     cookie ? cookie.Database = Database : false 
-    let info = {}
+    let info : Info = {database:"",dbs:[],result:[]}
     
     if (req.body.session == "logout"){
         res.clearCookie("user")
     }
     try{
         const resp = await db(cookie ? cookie : req.body)
-        const data = 
-        await resp.query(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`  )
-        const dbs = 
-        await resp.query(`SHOW DATABASES`  )
+        const data = await resp.query<RowDataPacket[]>(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`,(_err:Error,rows: [])=>rows)
+        const dbs = await resp.query<RowDataPacket[]>(`SHOW DATABASES`,(_err: Error,rows: [])=> rows )
         info.dbs = dbMapper(data,dbs[0])
         //Crear Cookie Si No Existe
-        info.dbs.forEach(db => {
+        info.dbs.forEach((db : object) => {
             console.log(db)
         });
         if (!cookie){
@@ -59,14 +58,16 @@ App.post("/",async (req,res)=>{
             console.log("Hola",dbName)
             resp.query(`CREATE DATABASE ${dbName};`)
         }
-    }catch(error){
-        info.error = error
-        if (error.errno == 1045){
-            res.clearCookie("user")
+    }catch(error ){
         res.render("login.ejs",{
             title:"login",
             info:info
-        })}
+        })
+        console.log("acá",typeof(error))
+        // info.error = typeof(error) !== 'unknown' ? "chi" : error
+//         if (error.errno == 1045){
+//             res.clearCookie("user")
+// }
     }
 
 

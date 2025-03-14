@@ -1,4 +1,6 @@
-function dbMapper(query:[],dbs: []) : [] {
+import { QueryResult, FieldPacket, RowDataPacket } from "mysql2";
+
+function dbMapper(query: [QueryResult, FieldPacket[]] ,dbs: [RowDataPacket[], FieldPacket[]]) : {tables:string[],Database:string}[] {
     query[0].map((el : {TABLE_NAME : string, TABLE_SCHEMA : string})=>{
         const indice: number = dbs.findIndex((e : {'Database':string}) => e.Database == el.TABLE_SCHEMA);
         if(dbs[indice].tables){
@@ -7,7 +9,6 @@ function dbMapper(query:[],dbs: []) : [] {
             dbs[indice].tables = [el.TABLE_NAME]
         }
     })
-    console.log(dbs)
     return dbs
 }
 
