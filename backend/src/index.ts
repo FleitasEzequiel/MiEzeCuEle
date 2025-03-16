@@ -1,4 +1,4 @@
-import express, { Errback } from "express"
+import express, { Errback, Request, Response } from "express"
 import cookieHelper from "./helpers/cookieHelper.js"
 import dbMapper from "./helpers/dbMapper.js"
 import db from "./db.js"
@@ -8,13 +8,15 @@ import { RowDataPacket } from "mysql2/promise.js"
 const App = express()
 App.use(express.urlencoded({ extended: true }))
 App.set("view engine","ejs")
-App.listen(3000,()=>{
+App.set('views', "./dist/" + 'views');
+App.listen(3000 ,()=>{
     console.log('ta andando')
 })
 
-App.get("/",async (req,res)=>{
+App.get("/",async (_req : Express.Request,res: Response)=>{
+
     try {
-        res.sendFile("login.html",{root:"./"})        
+        res.sendFile("login.html",{root:"./dist/"})        
     } catch (error) {
         res.send("Error al cargar").status(500)
     }
@@ -23,21 +25,22 @@ App.get("/",async (req,res)=>{
 App.post("/",async (req,res)=>{
     // Declaración de variables
     const { Database, user, password,query, dbName }  = req.body 
-    const cookie = cookieHelper(req.headers.cookie)
+    const cookie = req.headers.cookie && cookieHelper(req.headers.cookie)
     cookie ? cookie.Database = Database : false 
-    let info : Info = {database:"",dbs:[],result:[]}
+    let info : Info = {database:"",dbs:[],result : [] }
     
     if (req.body.session == "logout"){
         res.clearCookie("user")
     }
     try{
         const resp = await db(cookie ? cookie : req.body)
-        const data = await resp.query<RowDataPacket[]>(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`,(_err:Error,rows: [])=>rows)
-        const dbs = await resp.query<RowDataPacket[]>(`SHOW DATABASES`,(_err: Error,rows: [])=> rows )
+        const data = await resp.query<RowDataPacket[]>(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`).then((rows)=>rows)
+        const dbs = await resp.query<RowDataPacket[]>(`SHOW DATABASES`).then((value)=>value)
+        // console.log("undefined",dbs)
         info.dbs = dbMapper(data,dbs[0])
         //Crear Cookie Si No Existe
         info.dbs.forEach((db : object) => {
-            console.log(db)
+            // console.log(db)
         });
         if (!cookie){
             console.log("no hay cookie")
@@ -59,6 +62,7 @@ App.post("/",async (req,res)=>{
             resp.query(`CREATE DATABASE ${dbName};`)
         }
     }catch(error ){
+        console.log('entro por acá',error)
         res.render("login.ejs",{
             title:"login",
             info:info
@@ -71,10 +75,10 @@ App.post("/",async (req,res)=>{
     }
 
 
-    res.render("home.ejs",{
-        title:"home",
-        info:info,
-        session:cookie
-    })
+    // res.render("home.ejs",{
+    //     title:"home",
+    //     info:info,
+    //     session:cookie
+    // })
 })
 

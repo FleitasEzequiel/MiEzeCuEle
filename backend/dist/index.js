@@ -19,12 +19,13 @@ const db_js_1 = __importDefault(require("./db.js"));
 const App = (0, express_1.default)();
 App.use(express_1.default.urlencoded({ extended: true }));
 App.set("view engine", "ejs");
+App.set('views', "./dist/" + 'views');
 App.listen(3000, () => {
     console.log('ta andando');
 });
-App.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+App.get("/", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        res.sendFile("login.html", { root: "./" });
+        res.sendFile("login.html", { root: "./dist/" });
     }
     catch (error) {
         res.send("Error al cargar").status(500);
@@ -33,7 +34,7 @@ App.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 App.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // Declaración de variables
     const { Database, user, password, query, dbName } = req.body;
-    const cookie = (0, cookieHelper_js_1.default)(req.headers.cookie);
+    const cookie = req.headers.cookie && (0, cookieHelper_js_1.default)(req.headers.cookie);
     cookie ? cookie.Database = Database : false;
     let info = { database: "", dbs: [], result: [] };
     if (req.body.session == "logout") {
@@ -41,12 +42,13 @@ App.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     try {
         const resp = yield (0, db_js_1.default)(cookie ? cookie : req.body);
-        const data = yield resp.query(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`, (_err, rows) => rows);
-        const dbs = yield resp.query(`SHOW DATABASES`, (_err, rows) => rows);
+        const data = yield resp.query(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`).then((rows) => rows);
+        const dbs = yield resp.query(`SHOW DATABASES`).then((value) => value);
+        // console.log("undefined",dbs)
         info.dbs = (0, dbMapper_js_1.default)(data, dbs[0]);
         //Crear Cookie Si No Existe
         info.dbs.forEach((db) => {
-            console.log(db);
+            // console.log(db)
         });
         if (!cookie) {
             console.log("no hay cookie");
@@ -69,6 +71,7 @@ App.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
     catch (error) {
+        console.log('entro por acá', error);
         res.render("login.ejs", {
             title: "login",
             info: info
@@ -79,9 +82,9 @@ App.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         //             res.clearCookie("user")
         // }
     }
-    res.render("home.ejs", {
-        title: "home",
-        info: info,
-        session: cookie
-    });
+    // res.render("home.ejs",{
+    //     title:"home",
+    //     info:info,
+    //     session:cookie
+    // })
 }));

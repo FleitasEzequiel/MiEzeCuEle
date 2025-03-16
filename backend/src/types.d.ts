@@ -12,5 +12,5 @@ interface Info {
         errno: number
         error: string
     },
-    result?: [QueryResult,FieldPacket[]][]
+    result?: any
 }
