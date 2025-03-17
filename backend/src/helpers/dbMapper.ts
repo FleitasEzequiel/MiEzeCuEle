@@ -1,9 +1,12 @@
 import { QueryResult, FieldPacket, RowDataPacket } from "mysql2";
 
-function dbMapper(query: [QueryResult, FieldPacket[]] ,dbs: any)  {
+function dbMapper(query: [] ,dbs: any)  {
     dbs.map((db: {Database: string, tables?: string[]}) => {
-        db.tables = (query[0] as []).map((el: any)=>(el.TABLE_SCHEMA == db.Database) && el.TABLE_NAME  ).filter(Boolean)
+        db.tables = query.filter((el: {TABLE_SCHEMA : string}) =>
+            el.TABLE_SCHEMA == db.Database
+        ).map((el: {TABLE_NAME : string})=>el.TABLE_NAME)
     })
+    // (query[0] as []).map((el: any)=>(el.TABLE_SCHEMA == db.Database) && el.TABLE_NAME  ).filter(Boolean)
     // })
     // const yo = ((query)[0] as []).map((el: any)=>{
     //     console.log(Object.values(el))

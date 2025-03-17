@@ -7,7 +7,7 @@ type Consulta = {
 
 interface Info {
     database : string,
-    dbs: {tables:string[], Database: string}[],
+    dbs: any,
     error?: {
         errno: number
         error: string

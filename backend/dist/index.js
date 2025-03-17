@@ -42,14 +42,15 @@ App.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     try {
         const resp = yield (0, db_js_1.default)(cookie ? cookie : req.body);
-        const data = yield resp.query(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`).then((rows) => rows);
-        const dbs = yield resp.query(`SHOW DATABASES`).then((value) => value);
-        // console.log("undefined",dbs)
-        info.dbs = (0, dbMapper_js_1.default)(data, dbs[0]);
+        const data = yield resp.query(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`).then((rows) => rows[0]);
+        const dbs = yield resp.query(`SHOW DATABASES`).then((value) => value[0]);
+        info.dbs = (0, dbMapper_js_1.default)(data, dbs);
+        // info.dbs = dbs.map((db: {Database: string, tables?: string[]}) => {
+        //     db.tables = data.filter((el: {TABLE_SCHEMA : string}) =>
+        //         el.TABLE_SCHEMA == db.Database
+        //     ).map((el: {TABLE_NAME : string})=>el.TABLE_NAME)})
+        // dbs.map((db : any)=> db.tables = data.filter((row: any)=>row.TABLE_SCHEMA == db.Database))
         //Crear Cookie Si No Existe
-        info.dbs.forEach((db) => {
-            // console.log(db)
-        });
         if (!cookie) {
             console.log("no hay cookie");
             const session = {
@@ -82,9 +83,9 @@ App.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         //             res.clearCookie("user")
         // }
     }
-    // res.render("home.ejs",{
-    //     title:"home",
-    //     info:info,
-    //     session:cookie
-    // })
+    res.render("home.ejs", {
+        title: "home",
+        info: info,
+        session: cookie
+    });
 }));

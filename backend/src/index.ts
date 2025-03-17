@@ -34,14 +34,16 @@ App.post("/",async (req,res)=>{
     }
     try{
         const resp = await db(cookie ? cookie : req.body)
-        const data = await resp.query<RowDataPacket[]>(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`).then((rows)=>rows)
-        const dbs = await resp.query<RowDataPacket[]>(`SHOW DATABASES`).then((value)=>value)
-        // console.log("undefined",dbs)
-        info.dbs = dbMapper(data,dbs[0])
+        const data = await resp.query<RowDataPacket[]>(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`).then((rows)=>rows[0]) as []
+        const dbs = await resp.query<RowDataPacket[]>(`SHOW DATABASES`).then((value)=>value[0]) as []
+        info.dbs = dbMapper(data,dbs)
+        // info.dbs = dbs.map((db: {Database: string, tables?: string[]}) => {
+        //     db.tables = data.filter((el: {TABLE_SCHEMA : string}) =>
+        //         el.TABLE_SCHEMA == db.Database
+        //     ).map((el: {TABLE_NAME : string})=>el.TABLE_NAME)})
+        // dbs.map((db : any)=> db.tables = data.filter((row: any)=>row.TABLE_SCHEMA == db.Database))
         //Crear Cookie Si No Existe
-        info.dbs.forEach((db : object) => {
-            // console.log(db)
-        });
+
         if (!cookie){
             console.log("no hay cookie")
             const session = {
@@ -75,10 +77,10 @@ App.post("/",async (req,res)=>{
     }
 
 
-    // res.render("home.ejs",{
-    //     title:"home",
-    //     info:info,
-    //     session:cookie
-    // })
+    res.render("home.ejs",{
+        title:"home",
+        info:info,
+        session:cookie
+    })
 })
 
