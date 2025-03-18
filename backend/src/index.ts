@@ -5,6 +5,15 @@ import db from "./db.js"
 import { Info } from "./types.js"
 import * as ejs from "ejs"
 import { RowDataPacket } from "mysql2/promise.js"
+
+const Action = {
+    setCookie: (data: {user :string, password: string}) =>{
+        express.response.cookie("user",data)
+    },
+    removeCookie: () =>{
+
+    }
+}
 const App = express()
 App.use(express.urlencoded({ extended: true }))
 App.set("view engine","ejs")
@@ -46,11 +55,10 @@ App.post("/",async (req,res)=>{
 
         if (!cookie){
             console.log("no hay cookie")
-            const session = {
+            Action.setCookie({
                 user: user,
                 password: password,
-            }
-            res.cookie("user",session)
+            })
         }
         //----------------------
         //Si existe una consulta realizarla

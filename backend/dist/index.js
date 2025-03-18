@@ -16,6 +16,13 @@ const express_1 = __importDefault(require("express"));
 const cookieHelper_js_1 = __importDefault(require("./helpers/cookieHelper.js"));
 const dbMapper_js_1 = __importDefault(require("./helpers/dbMapper.js"));
 const db_js_1 = __importDefault(require("./db.js"));
+const Action = {
+    setCookie: (data) => {
+        express_1.default.response.cookie("user", data);
+    },
+    removeCookie: () => {
+    }
+};
 const App = (0, express_1.default)();
 App.use(express_1.default.urlencoded({ extended: true }));
 App.set("view engine", "ejs");
@@ -53,11 +60,10 @@ App.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         //Crear Cookie Si No Existe
         if (!cookie) {
             console.log("no hay cookie");
-            const session = {
+            Action.setCookie({
                 user: user,
                 password: password,
-            };
-            res.cookie("user", session);
+            });
         }
         //----------------------
         //Si existe una consulta realizarla
