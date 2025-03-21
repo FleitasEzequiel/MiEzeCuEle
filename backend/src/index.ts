@@ -11,7 +11,7 @@ const Action = {
         express.response.cookie("user",data)
     },
     removeCookie: () =>{
-
+        express.response.clearCookie("user")
     }
 }
 const App = express()
@@ -33,14 +33,12 @@ App.get("/",async (_req : Express.Request,res: Response)=>{
 
 App.post("/",async (req,res)=>{
     // Declaración de variables
-    const { Database, user, password,query, dbName }  = req.body 
+    const { Database, user, password,query, dbName, session }  = req.body 
     const cookie = req.headers.cookie && cookieHelper(req.headers.cookie)
     cookie ? cookie.Database = Database : false 
-    let info : Info = {database:"",dbs:[],result : [] }
+    let info : Info = {database:"",dbs:[],result : [] };
     
-    if (req.body.session == "logout"){
-        res.clearCookie("user")
-    }
+    session == "logout" && Action.removeCookie()
     try{
         const resp = await db(cookie ? cookie : req.body)
         const data = await resp.query<RowDataPacket[]>(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`).then((rows)=>rows[0]) as []
