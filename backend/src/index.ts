@@ -2,22 +2,26 @@ import express, { Errback, Request, Response } from "express"
 import cookieHelper from "./helpers/cookieHelper.js"
 import dbMapper from "./helpers/dbMapper.js"
 import db from "./db.js"
+import cors from "cors"
 import { Info } from "./types.js"
 import * as ejs from "ejs"
 import { RowDataPacket } from "mysql2/promise.js"
 
-const Action = {
-    setCookie: (data: {user :string, password: string}) =>{
-        express.response.cookie("user",data)
-    },
-    removeCookie: () =>{
-        express.response.clearCookie("user")
-    }
-}
+// const Action = {
+//     setCookie: (data: {user :string, password: string}) =>{
+//         express.response.cookie("user",data)
+//     },
+//     removeCookie: () =>{
+//         response.clearCookie("user")
+//     }
+// }
+
 const App = express()
+App.use(cors({
+    credentials:true,
+    origin:"http://localhost:5173"
+}))
 App.use(express.urlencoded({ extended: true }))
-App.set("view engine","ejs")
-App.set('views', "./dist/" + 'views');
 App.listen(3000 ,()=>{
     console.log('ta andando')
 })
@@ -31,62 +35,58 @@ App.get("/",async (_req : Express.Request,res: Response)=>{
     }
 })
 
-App.post("/",async (req,res)=>{
-    // Declaración de variables
-    const { Database, user, password,query, dbName, session }  = req.body 
-    const cookie = req.headers.cookie && cookieHelper(req.headers.cookie)
-    cookie ? cookie.Database = Database : false 
-    let info : Info = {database:"",dbs:[],result : [] };
-    
-    session == "logout" && Action.removeCookie()
-    try{
-        const resp = await db(cookie ? cookie : req.body)
-        const data = await resp.query<RowDataPacket[]>(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`).then((rows)=>rows[0]) as []
-        const dbs = await resp.query<RowDataPacket[]>(`SHOW DATABASES`).then((value)=>value[0]) as []
-        info.dbs = dbMapper(data,dbs)
-        // info.dbs = dbs.map((db: {Database: string, tables?: string[]}) => {
-        //     db.tables = data.filter((el: {TABLE_SCHEMA : string}) =>
-        //         el.TABLE_SCHEMA == db.Database
-        //     ).map((el: {TABLE_NAME : string})=>el.TABLE_NAME)})
-        // dbs.map((db : any)=> db.tables = data.filter((row: any)=>row.TABLE_SCHEMA == db.Database))
-        //Crear Cookie Si No Existe
-
-        if (!cookie){
-            console.log("no hay cookie")
-            Action.setCookie({
-                user: user,
-                password: password,
-            })
-        }
-        //----------------------
-        //Si existe una consulta realizarla
-        if (query){
-            await resp.query(`USE \`${Database || "sys"}\` `)
-                const result = await resp.query(query)
-                info.result = result
-        }        
-        if (dbName){
-            console.log("Hola",dbName)
-            resp.query(`CREATE DATABASE ${dbName};`)
-        }
-    }catch(error ){
-        console.log('entro por acá',error)
-        res.render("login.ejs",{
-            title:"login",
-            info:info
-        })
-        console.log("acá",typeof(error))
-        // info.error = typeof(error) !== 'unknown' ? "chi" : error
-//         if (error.errno == 1045){
-//             res.clearCookie("user")
-// }
-    }
-
-
-    res.render("home.ejs",{
-        title:"home",
-        info:info,
-        session:cookie
+App.post("/api/query",async (req,res)=>{
+    console.log("hola")
+    const resp = await db({
+        host:"localhost",
+        "user":"root",
+        password:""
     })
+    const data = await resp.query<RowDataPacket[]>(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`).then((rows)=>rows[0]) as []
+    console.log(data)
 })
+// {
+//     // Declaración de variables
+//     const { Database, user, password,query, dbName, session }  = req.body 
+//     const cookie = req.headers.cookie && cookieHelper(req.headers.cookie)
+//     cookie ? cookie.Database = Database : false 
+//     let info : Info = {database:"",dbs:[],result : [] };
+    
+//     try{
+//         const resp = await db(cookie ? cookie : req.body)
+//         const data = await resp.query<RowDataPacket[]>(`SELECT TABLE_NAME,TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES`).then((rows)=>rows[0]) as []
+//         const dbs = await resp.query<RowDataPacket[]>(`SHOW DATABASES`).then((value)=>value[0]) as []
+//         info.dbs = dbMapper(data,dbs)
+//         // info.dbs = dbs.map((db: {Database: string, tables?: string[]}) => {
+//         //     db.tables = data.filter((el: {TABLE_SCHEMA : string}) =>
+//         //         el.TABLE_SCHEMA == db.Database
+//         //     ).map((el: {TABLE_NAME : string})=>el.TABLE_NAME)})
+//         // dbs.map((db : any)=> db.tables = data.filter((row: any)=>row.TABLE_SCHEMA == db.Database))
+//         //Crear Cookie Si No Existe
+
+//         //Si existe una consulta realizarla
+//         if (query){
+//             await resp.query(`USE \`${Database || "sys"}\` `)
+//                 const result = await resp.query(query)
+//                 info.result = result
+//         }        
+//         if (dbName){
+//             console.log("Hola",dbName)
+//             resp.query(`CREATE DATABASE ${dbName};`)
+//         }
+//     }catch(error ){
+//         console.log('entro por acá',error)
+//         res.render("login.ejs",{
+//             title:"login",
+//             info:info
+//         })
+//         console.log("acá",typeof(error))
+//         // info.error = typeof(error) !== 'unknown' ? "chi" : error
+// //         if (error.errno == 1045){
+// //             res.clearCookie("user")
+// // }
+//     }
+
+
+// })
 

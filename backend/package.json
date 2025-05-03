@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "node --watch dist/index.js",
-    "build": "npx tsc -w "
+    "predev": "npx tsc"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +19,7 @@
     "mysql2": "^3.11.5"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "typescript": "^5.8.2"
   }
 }
